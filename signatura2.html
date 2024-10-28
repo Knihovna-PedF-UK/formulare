@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Načítání dat z pole</title>
+	<style>
+		table {
+			border-collapse: collapse;
+		}
+		th, td {
+			border: 1px solid #ddd;
+			padding: 10px;
+		}
+	</style>
+</head>
+<body>
+	<h1>Načítání dat z pole</h1>
+	<textarea id="pole" rows="10" cols="50" placeholder="Zadejte text obsahující tabulku s položkami oddělenými tabulátorem"></textarea>
+	<button id="nacti">Načíst data</button>
+	<div id="tabulka"></div>
+
+	<script>
+		const pole = document.getElementById('pole');
+		const nacti = document.getElementById('nacti');
+		const tabulka = document.getElementById('tabulka');
+
+		nacti.addEventListener('click', () => {
+			const text = pole.value;
+			if (text.trim()!== '') {
+				const rows = text.split('\n');
+				const table = document.createElement('table');
+				rows.forEach((row) => {
+					const tr = document.createElement('tr');
+					const cells = row.split('\t');
+					cells.forEach((cell) => {
+						const td = document.createElement('td');
+						td.textContent = cell.trim();
+						tr.appendChild(td);
+					});
+					table.appendChild(tr);
+				});
+				tabulka.innerHTML = '';
+				tabulka.appendChild(table);
+			} else {
+				alert('Prosím, zadejte text obsahující tabulku s položkami oddělenými tabulátorem.');
+			}
+		});
+	</script>
+</body>
+</html>
