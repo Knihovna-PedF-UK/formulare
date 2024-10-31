@@ -44,6 +44,24 @@
 				alert('Prosím, zadejte text obsahující tabulku s položkami oddělenými tabulátorem.');
 			}
 		});
+    function generateCode(text) {
+      const [title, authors] = text.split("/").map(part => part.trim());
+  
+      // Extrahuje první záznam v seznamu autorů a rozdělí ho na jednotlivá slova
+      const firstAuthor = authors.split(",")[0].trim();
+      const firstAuthorWords = firstAuthor.split(" ");
+
+      // Zkontroluje, jestli má první jméno autora nejvýše tři slova
+      const code = firstAuthorWords.length <= 3 
+        ? firstAuthorWords.slice(-1)[0].slice(0, 2) + title.slice(0, 2) // standardní kód
+        : title.slice(0, 4); // pokud je více než tři slova, bere 4 písmena z názvu
+
+      return code;
+    }
+
+    // Příklad použití
+    console.log(generateCode("Speciálněpedagogická čítanka / Zdeňka Michalová ... [et al.] ; Blanka Housarová (editor)")); // Výstup: "Spec"
+    console.log(generateCode("Základy Psychologie / Pavel Beneš")); // Výstup: "BeZá"
 	</script>
 </body>
 </html>
