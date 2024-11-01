@@ -1,5 +1,5 @@
 // Načtení funkce generateCode
-const {generateCode} = require('../js/signatura2');
+const {generateCode, parseTable} = require('../js/signatura2');
 
 describe('generateCode function', () => {
   
@@ -36,5 +36,19 @@ describe('generateCode function', () => {
     const text = "Analyzing Algorithms / ";
     expect(generateCode(text)).toBe("Anal");
   });
+});
+
+describe("parse table", () => {
+  let table = `Typ změny	Titul	Cílové umístění	Čárový kód	Umístění	Popis	Typ signatury	Signatura	Přírůstkové číslo holdingu	Signatura jednotky	Výpůjční pravidla pro danou jednotku	Termín vrácení
+Permanent	Základy sociální psychologie / Rudolf Kohoutek a kolektiv	Reshelve	2599801586	Rett-studovna		No information provided	PSYCH 4		F32163	Not for loan	
+Permanent	Psychologie učení : teoretické a výzkumné poznatky pro edukační praxi / Jan Průcha	Reshelve	2592232314	Rett-studovna		No information provided	PSYCH 8		F55817b	Not for loan	`
+  let result = parseTable(table);
+  it("Should parse table", () => {
+    expect(result.length).toBe(3);
+  });
+  it("Should ignore empty table", () => {
+    expect(parseTable("").length).toBe(0);
+  });
+  
 });
 

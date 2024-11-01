@@ -39,7 +39,12 @@
     <!-- const {parseTable} = require("js/signatura2"); -->
 
 		nacti.addEventListener('click', () => {
-      parseTable(pole.value, tabulka);
+      const hodnoty =  parseTable(pole.value);
+      if(hodnoty.length == 0){
+        alert('Prosím, zadejte text obsahující tabulku s položkami oddělenými tabulátorem.');
+      }else{
+        renderTable(hodnoty, tabulka);
+      }
 		});
 	</script>
 </body>

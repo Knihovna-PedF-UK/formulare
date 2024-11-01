@@ -14,30 +14,36 @@ function generateCode(text) {
   return code || ""; // Vrací prázdný řetězec, pokud není kód k dispozici
 }
 
-function parseTable(text, tabulka){
-  // const text = pole.value;
-  if (text.trim()!== '') {
-    const rows = text.split('\n');
-    const table = document.createElement('table');
-    rows.forEach((row) => {
-      const tr = document.createElement('tr');
-      const cells = row.split('\t');
-      cells.forEach((cell) => {
-        const td = document.createElement('td');
-        td.textContent = cell.trim();
-        tr.appendChild(td);
-      });
-      table.appendChild(tr);
-    });
-    tabulka.innerHTML = '';
-    tabulka.appendChild(table);
-  } else {
-    alert('Prosím, zadejte text obsahující tabulku s položkami oddělenými tabulátorem.');
+
+function parseTable(text) {
+  if (text.trim() === '') {
+    return [];
   }
+  const rows = text.split('\n');
+  return rows.map(row => row.split('\t').map(cell => cell.trim()));
+}
+
+// Funkce renderTable: Vykreslí tabulku z pole do zadaného elementu
+function renderTable(dataArray, container) {
+  if (dataArray.length === 0) return; // Pokud je pole prázdné, nevykresluje
+
+  const table = document.createElement('table');
+  dataArray.forEach(rowData => {
+    const tr = document.createElement('tr');
+    rowData.forEach(cellData => {
+      const td = document.createElement('td');
+      td.textContent = cellData;
+      tr.appendChild(td);
+    });
+    table.appendChild(tr);
+  });
+  container.innerHTML = ''; // Vyprázdní obsah kontejneru
+  container.appendChild(table); // Přidá nově vytvořenou tabulku
 }
 
 // Exportuje funkci pro použití v jiných souborech a pro testování
 module.exports = {
   generateCode,
-  parseTable
+  parseTable, 
+  renderTable
 };
