@@ -3,6 +3,11 @@
 <head>
 	<title>Načítání dat z pole</title>
 	<style>
+    body{
+      margin: 0 auto;
+      padding: 2ch;
+      max-width: 84ch;
+    } 
 		table {
 			border-collapse: collapse;
 		}
@@ -11,8 +16,17 @@
 			padding: 10px;
 		}
 	</style>
+  <link rel="stylesheet" href="css/tiny-brutalism.css">
+  <script>
+    //trik, abych mohl v importovaný knihovně použít moduly
+    module = {};
+  </script>
+  <script src="js/signatura2.js" type="text/javascript"></script>
+
+
 </head>
 <body>
+
 	<h1>Načítání dat z pole</h1>
 	<textarea id="pole" rows="10" cols="50" placeholder="Zadejte text obsahující tabulku s položkami oddělenými tabulátorem"></textarea>
 	<button id="nacti">Načíst data</button>
@@ -22,46 +36,14 @@
 		const pole = document.getElementById('pole');
 		const nacti = document.getElementById('nacti');
 		const tabulka = document.getElementById('tabulka');
+    <!-- const {parseTable} = require("js/signatura2"); -->
 
 		nacti.addEventListener('click', () => {
-			const text = pole.value;
-			if (text.trim()!== '') {
-				const rows = text.split('\n');
-				const table = document.createElement('table');
-				rows.forEach((row) => {
-					const tr = document.createElement('tr');
-					const cells = row.split('\t');
-					cells.forEach((cell) => {
-						const td = document.createElement('td');
-						td.textContent = cell.trim();
-						tr.appendChild(td);
-					});
-					table.appendChild(tr);
-				});
-				tabulka.innerHTML = '';
-				tabulka.appendChild(table);
-			} else {
-				alert('Prosím, zadejte text obsahující tabulku s položkami oddělenými tabulátorem.');
-			}
+      parseTable(pole.value, tabulka);
 		});
-    function generateCode(text) {
-      const [title, authors] = text.split("/").map(part => part.trim());
-  
-      // Extrahuje první záznam v seznamu autorů a rozdělí ho na jednotlivá slova
-      const firstAuthor = authors.split(",")[0].trim();
-      const firstAuthorWords = firstAuthor.split(" ");
-
-      // Zkontroluje, jestli má první jméno autora nejvýše tři slova
-      const code = firstAuthorWords.length <= 3 
-        ? firstAuthorWords.slice(-1)[0].slice(0, 2) + title.slice(0, 2) // standardní kód
-        : title.slice(0, 4); // pokud je více než tři slova, bere 4 písmena z názvu
-
-      return code;
-    }
-
-    // Příklad použití
-    console.log(generateCode("Speciálněpedagogická čítanka / Zdeňka Michalová ... [et al.] ; Blanka Housarová (editor)")); // Výstup: "Spec"
-    console.log(generateCode("Základy Psychologie / Pavel Beneš")); // Výstup: "BeZá"
 	</script>
 </body>
 </html>
+
+
+
