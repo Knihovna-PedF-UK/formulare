@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="utf-8" />
 	<title>Načítání dat z pole</title>
 	<style>
     body{
@@ -15,6 +16,10 @@
 			border: 1px solid #ddd;
 			padding: 10px;
 		}
+    header{
+      padding-bottom: 0.3rem; 
+      margin-bottom: 0.3rem;
+    }
 	</style>
   <link rel="stylesheet" href="css/tiny-brutalism.css">
   <script>
@@ -27,8 +32,10 @@
 
 </head>
 <body>
+  <header id="header">
+  </header>
 
-	<h1>Načítání dat z pole</h1>
+	<h1>Tvorba 2. signatur</h1>
 	<textarea id="pole" rows="10" cols="50" placeholder="Zadejte text obsahující tabulku s položkami oddělenými tabulátorem"></textarea>
 	<button id="nacti">Načíst data</button>
 	<div id="tabulka"></div>
@@ -37,7 +44,6 @@
 		const pole = document.getElementById('pole');
 		const nacti = document.getElementById('nacti');
 		const tabulka = document.getElementById('tabulka');
-    <!-- const {parseTable} = require("js/signatura2"); -->
 
 		nacti.addEventListener('click', () => {
       const hodnoty =  parseTable(pole.value);
@@ -45,9 +51,22 @@
         alert('Prosím, zadejte text obsahující tabulku s položkami oddělenými tabulátorem.');
       }else{
         renderTable(hodnoty, tabulka);
+        const texlive = new TeXLiveForm();
+
+        // Příklad použití
+        // texlive.submit([
+        //   {
+        //     name: 'document.tex',
+        //     content: '\\documentclass{article}\\begin{document}Hello\\end{document}'
+        //   }
+        // ], {
+        //   engine: 'pdflatex',
+        //   return: 'pdf'
+        // });
       }
 		});
-	</script>
+  </script>
+  <script src="js/header.js"></script>
 </body>
 </html>
 
