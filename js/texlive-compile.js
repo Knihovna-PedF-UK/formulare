@@ -1,98 +1,87 @@
-/**
- * Submits multiple files to texlive.net for LaTeX processing
- * @param {Object[]} files - Array of file objects with {name: string, content: string}
- * @param {Object} options - Configuration options
- * @param {string} options.engine - LaTeX engine (pdflatex, lualatex, xelatex, etc.)
- * @param {string} options.bibcmd - Bibliography command (biber, bibtex, etc.)
- * @param {string} options.return - Return format (pdfjs, pdf, log, make4ht, etc.)
- * @param {string[]} options.makeindex - Array of makeindex options
- * @returns {Promise<Response>} Response from the texlive.net server
- */
-async function submitToTexlive(files, options = {}) {
-    // Validate inputs
-    if (!Array.isArray(files) || !files.length) {
-        throw new Error('Files array must be non-empty');
-    }
+// TeXLive form handler
+class TeXLiveForm {
+  constructor(options = {}) {
+    this.targetUrl = options.targetUrl || 'https://texlive.net/cgi-bin/latexcgi';
+    this.defaultEngine = options.defaultEngine || 'pdflatex';
+  }
 
-    // Check if document.tex exists in files
-    if (!files.some(file => file.name === 'document.tex')) {
-        throw new Error('Files must include document.tex');
-    }
+  createForm(files, options = {}) {
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = this.targetUrl;
+    form.enctype = 'multipart/form-data';
+    form.target = '_blank'; // Otevře výsledek v novém okně
 
-    // Valid engine options
-    const validEngines = [
-        'lualatex', 'pdflatex', 'xelatex', 'uplatex', 'platex', 'latex',
-        'lualatex-dev', 'pdflatex-dev', 'xelatex-dev', 'uplatex-dev', 
-        'platex-dev', 'latex-dev', 'luatex', 'pdftex', 'xetex', 'uptex', 
-        'ptex', 'tex', 'optex', 'context', 'asy'
-    ];
-
-    // Valid return options
-    const validReturnTypes = ['pdfjs', 'pdf', 'log', 'make4ht', 'LaTeXML', 'lwarp'];
-    
-    // Valid bibliography commands
-    const validBibCmds = ['biber', 'bibtex', 'pbibtex', 'bibtex8'];
-
-    // Create FormData object
-    const formData = new FormData();
-
-    // Add engine if specified and valid
+    // Přidání engine pole
     if (options.engine) {
-        if (!validEngines.includes(options.engine)) {
-            throw new Error(`Invalid engine. Must be one of: ${validEngines.join(', ')}`);
-        }
-        formData.append('engine', options.engine);
+      const engineInput = document.createElement('input');
+      engineInput.type = 'hidden';
+      engineInput.name = 'engine';
+      engineInput.value = options.engine;
+      form.appendChild(engineInput);
     }
 
-    // Add return format if specified and valid
-    if (options.return) {
-        if (!validReturnTypes.includes(options.return)) {
-            throw new Error(`Invalid return type. Must be one of: ${validReturnTypes.join(', ')}`);
-        }
-        formData.append('return', options.return);
-    }
-
-    // Add bibliography command if specified and valid
+    // Přidání bibcmd pole
     if (options.bibcmd) {
-        if (!validBibCmds.includes(options.bibcmd)) {
-            throw new Error(`Invalid bibliography command. Must be one of: ${validBibCmds.join(', ')}`);
-        }
-        formData.append('bibcmd', options.bibcmd);
+      const bibcmdInput = document.createElement('input');
+      bibcmdInput.type = 'hidden';
+      bibcmdInput.name = 'bibcmd';
+      bibcmdInput.value = options.bibcmd;
+      form.appendChild(bibcmdInput);
     }
 
-    // Add makeindex options if specified
+    // Přidání makeglossaries pole
+    if (options.makeglossaries) {
+      const glossariesInput = document.createElement('input');
+      glossariesInput.type = 'hidden';
+      glossariesInput.name = 'makeglossaries';
+      glossariesInput.value = options.makeglossaries;
+      form.appendChild(glossariesInput);
+    }
+
+    // Přidání return pole
+    const returnInput = document.createElement('input');
+    returnInput.type = 'hidden';
+    returnInput.name = 'return';
+    returnInput.value = options.return || 'pdf';
+    form.appendChild(returnInput);
+
+    // Přidání makeindex polí
     if (options.makeindex && Array.isArray(options.makeindex)) {
-        options.makeindex.forEach(opt => {
-            // Validate makeindex option - only allow -, ., letters and digits
-            if (!/^[-.\w]+$/.test(opt)) {
-                throw new Error('Invalid makeindex option. Only -, ., letters and digits are allowed');
-            }
-            formData.append('makeindex[]', opt);
-        });
+      options.makeindex.forEach(indexOpt => {
+        const indexInput = document.createElement('input');
+        indexInput.type = 'hidden';
+        indexInput.name = 'makeindex[]';
+        indexInput.value = indexOpt;
+        form.appendChild(indexInput);
+      });
     }
 
-    // Add files
-    files.forEach(file => {
-        if (!file.name || typeof file.content !== 'string') {
-            throw new Error('Each file must have name and content properties');
-        }
-        formData.append('filename[]', file.name);
-        formData.append('filecontents[]', file.content);
+    // Přidání souborů
+    files.forEach((file, index) => {
+      // Filename pole
+      const filenameInput = document.createElement('input');
+      filenameInput.type = 'hidden';
+      filenameInput.name = 'filename[]';
+      filenameInput.value = file.name;
+      form.appendChild(filenameInput);
+
+      // Filecontents pole
+      const contentInput = document.createElement('textarea');
+      // contentInput.type = 'text';
+      contentInput.style = "visibility:hidden";
+      contentInput.name = 'filecontents[]';
+      contentInput.textContent = file.content;
+      form.appendChild(contentInput);
     });
 
-    // Submit to texlive.net
-    try {
-        const response = await fetch('https://texlive.net/cgi-bin/latexcgi', {
-            method: 'POST',
-            body: formData
-        });
+    return form;
+  }
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        return response;
-    } catch (error) {
-        throw new Error(`Failed to submit to texlive.net: ${error.message}`);
-    }
+  submit(files, options = {}) {
+    const form = this.createForm(files, options);
+    document.body.appendChild(form);
+    form.submit();
+    document.body.removeChild(form);
+  }
 }
