@@ -10,7 +10,7 @@ describe('generateCode function', () => {
   
   it('should generate code "Spec" for long author info in "Speciálněpedagogická čítanka / Zdeňka Michalová ... [et al.] ; Blanka Housarová (editor)"', () => {
     const text = "Speciálněpedagogická čítanka / Zdeňka Michalová ... [et al.] ; Blanka Housarová (editor)";
-    expect(generateCode(text)).toBe("Spec");
+    expect(generateCode(text)).toBe("MiSp");
   });
   
   it('should generate code "NoTa" for title with no author like "Notable Title /"', () => {
@@ -35,6 +35,10 @@ describe('generateCode function', () => {
   it('should generate code "Anal" for title "Analyzing Algorithms / "', () => {
     const text = "Analyzing Algorithms / ";
     expect(generateCode(text)).toBe("Anal");
+  });
+  it('should generate code "KoZá" for title "Základy sociální psychologie / Rudolf Kohoutek a kolektiv"', () => {
+    const text = "Základy sociální psychologie / Rudolf Kohoutek a kolektiv";
+    expect(generateCode(text)).toBe("KoZá");
   });
 });
 
