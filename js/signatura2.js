@@ -97,19 +97,24 @@ function transformTable(table, titul_col, barcode_col, location_col, signatura_c
   });
 }
 
+const transformTableOrder = ["titul", "barcode", "code", "location", "signatura", "rules"]
+
 // Funkce renderTable: Vykreslí tabulku z pole do zadaného elementu
 function renderTable(dataArray, container) {
   if (dataArray.length === 0) return; // Pokud je pole prázdné, nevykresluje
 
   const table = document.createElement('table');
   dataArray.forEach(rowData => {
-    const tr = document.createElement('tr');
-    rowData.forEach(cellData => {
-      const td = document.createElement('td');
-      td.textContent = cellData;
-      tr.appendChild(td);
-    });
-    table.appendChild(tr);
+    if(rowData){
+      const tr = document.createElement('tr');
+      transformTableOrder.forEach(name => {
+        const td = document.createElement('td');
+        const cellData = rowData[name];
+        td.textContent = cellData;
+        tr.appendChild(td);
+      });
+      table.appendChild(tr);
+    }
   });
   container.innerHTML = ''; // Vyprázdní obsah kontejneru
   container.appendChild(table); // Přidá nově vytvořenou tabulku

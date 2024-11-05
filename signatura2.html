@@ -44,13 +44,21 @@
 		const pole = document.getElementById('pole');
 		const nacti = document.getElementById('nacti');
 		const tabulka = document.getElementById('tabulka');
+    const titul_col =1;
+    const barcode_col = 3;
+    const location_col = 4;
+    const signatura_col = 7;
+    const rules_col = 10;
 
 		nacti.addEventListener('click', () => {
       const hodnoty =  parseTable(pole.value);
       if(hodnoty.length == 0){
         alert('Prosím, zadejte text obsahující tabulku s položkami oddělenými tabulátorem.');
       }else{
-        renderTable(hodnoty, tabulka);
+        const transformed = transformTable(hodnoty, titul_col, barcode_col, location_col, signatura_col, rules_col)
+        console.log(transformed)
+        
+        renderTable(transformed, tabulka);
         const texlive = new TeXLiveForm();
 
         // Příklad použití
