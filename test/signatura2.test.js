@@ -1,5 +1,5 @@
 // Načtení funkce generateCode
-const {generateCode, parseTable} = require('../js/signatura2');
+const {generateCode, parseTable, transformTable, libraryCode} = require('../js/signatura2');
 
 describe('generateCode function', () => {
   
@@ -42,17 +42,45 @@ describe('generateCode function', () => {
   });
 });
 
-describe("parse table", () => {
-  let table = `Typ změny	Titul	Cílové umístění	Čárový kód	Umístění	Popis	Typ signatury	Signatura	Přírůstkové číslo holdingu	Signatura jednotky	Výpůjční pravidla pro danou jednotku	Termín vrácení
+let table = `Typ změny	Titul	Cílové umístění	Čárový kód	Umístění	Popis	Typ signatury	Signatura	Přírůstkové číslo holdingu	Signatura jednotky	Výpůjční pravidla pro danou jednotku	Termín vrácení
 Permanent	Základy sociální psychologie / Rudolf Kohoutek a kolektiv	Reshelve	2599801586	Rett-studovna		No information provided	PSYCH 4		F32163	Not for loan	
-Permanent	Psychologie učení : teoretické a výzkumné poznatky pro edukační praxi / Jan Průcha	Reshelve	2592232314	Rett-studovna		No information provided	PSYCH 8		F55817b	Not for loan	`
-  let result = parseTable(table);
+Permanent	Psychologie učení : teoretické a výzkumné poznatky pro edukační praxi / Jan Průcha	Reshelve	2592232314	Rett-studovna		No information provided	PSYCH 8		F55817b	Not for loa	
+Permanent	Proměny rodiny v evropské historii : historicko-antropologická esej / Jack Goody ; [z anglického originálu European family, přeložila Petra Diestlerová]	Reshelve	2592240668	Rett-studovna		No information provided			F44526a	Not for loan	
+Permanent	Proměny rodiny v evropské historii : historicko-antropologická esej / Jack Goody ; [z anglického originálu European family, přeložila Petra Diestlerová]	Reshelve	2592240668	Celetná - studovna		No information provided			F44526a	Regular loan	`
+
+let result = parseTable(table);
+describe("parse table", () => {
   it("Should parse table", () => {
-    expect(result.length).toBe(3);
+    expect(result.length).toBe(5);
   });
   it("Should ignore empty table", () => {
     expect(parseTable("").length).toBe(0);
   });
-  
+  let first = result[0]
+  it("Should return object", () => {
+    expect(first[0]).toBe("Typ změny");
+  });
 });
+
+const titul_col =1;
+const barcode_col = 3;
+const location_col = 4;
+const signatura_col = 7;
+const rules_col = 10;
+let transformed = transformTable(result, titul_col, barcode_col, location_col, signatura_col, rules_col)
+
+describe('transformTable', () => {
+  it("Should return two rows", () => {
+    console.log(transformed);
+    expect(transformed.length).toBe(4);
+  });
+  it("Should generate code", () => {
+    expect(transformed[0].code).toBe("KoZá");
+  });
+  console.log(libraryCode(transformed[0]))
+})
+
+
+
+
 

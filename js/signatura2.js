@@ -120,9 +120,30 @@ function renderTable(dataArray, container) {
   container.appendChild(table); // Přidá nově vytvořenou tabulku
 }
 
+// vytvořit LaTeXovej příkaz
+function libraryCode(data){
+  // Základní prefix, který se změní podle location
+  let prefix = data.location.includes("Celetná") ? "\\celetna" : "\\oddil";
+    
+  // Podmínka pro pravidlo půjčky
+  let loanType = data.rules.includes("Regular loan") ? "[green]" : "";
+
+  // Sestavení řetězce s potřebnými argumenty
+  return `${prefix}${loanType}{${data.signatura}}{${data.code}}{${data.barcode}}`;
+}
+
+
+function generateLaTeX(dataArray, template){
+
+}
+
+
 // Exportuje funkci pro použití v jiných souborech a pro testování
 module.exports = {
   generateCode,
   parseTable, 
-  renderTable
+  renderTable,
+  transformTable,
+  libraryCode,
+  generateLaTeX
 };

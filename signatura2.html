@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8" />
-	<title>Načítání dat z pole</title>
+	<title>Tvorba druhých signatur</title>
 	<style>
     body{
       margin: 0 auto;
@@ -20,6 +20,9 @@
       padding-bottom: 0.3rem; 
       margin-bottom: 0.3rem;
     }
+    #generovat{
+      visibility: hidden;
+    }
 	</style>
   <link rel="stylesheet" href="css/tiny-brutalism.css">
   <script>
@@ -34,45 +37,61 @@
 <body>
   <header id="header">
   </header>
+  <template id="signatura2_sty">
+    \newcommand\pokus[1]{\leavevmode\noindent hodnota: #1\par}
+  </template>
 
-	<h1>Tvorba 2. signatur</h1>
+	<h1>Tvorba druhých signatur</h1>
 	<textarea id="pole" rows="10" cols="50" placeholder="Zadejte text obsahující tabulku s položkami oddělenými tabulátorem"></textarea>
 	<button id="nacti">Načíst data</button>
+  <button id="generovat">Generovat PDF</button>
 	<div id="tabulka"></div>
 
 	<script>
 		const pole = document.getElementById('pole');
 		const nacti = document.getElementById('nacti');
 		const tabulka = document.getElementById('tabulka');
+    const generovat = document.getElementById("generovat")
     const titul_col =1;
     const barcode_col = 3;
     const location_col = 4;
     const signatura_col = 7;
     const rules_col = 10;
+    let transformed = []
 
 		nacti.addEventListener('click', () => {
       const hodnoty =  parseTable(pole.value);
       if(hodnoty.length == 0){
         alert('Prosím, zadejte text obsahující tabulku s položkami oddělenými tabulátorem.');
       }else{
-        const transformed = transformTable(hodnoty, titul_col, barcode_col, location_col, signatura_col, rules_col)
-        console.log(transformed)
-        
+        transformed = transformTable(hodnoty, titul_col, barcode_col, location_col, signatura_col, rules_col)
         renderTable(transformed, tabulka);
-        const texlive = new TeXLiveForm();
+        generovat.style.visibility = "visible";
 
-        // Příklad použití
-        // texlive.submit([
-        //   {
-        //     name: 'document.tex',
-        //     content: '\\documentclass{article}\\begin{document}Hello\\end{document}'
-        //   }
-        // ], {
-        //   engine: 'pdflatex',
-        //   return: 'pdf'
-        // });
+
       }
 		});
+		generovat.addEventListener('click', () => {
+      console.log("ahoj");
+      console.log(transformed);
+      const texlive = new TeXLiveForm();
+      const signatura2_sty = document.getElementById("signatura2_sty");
+      console.log(signatura2_sty.content.textContent);
+      // Příklad použití
+      // texlive.submit([
+      //   {
+      //     name: 'document.tex',
+      //     content: '\\documentclass{article}\\usepackage{kniznistitky}\\begin{document}\\pokus{Hello}\\end{document}'
+      //   },{
+      //     name: "kniznistitky.sty",
+      //     content: signatura2_sty.content.textContent
+      //  }
+      // ], {
+      //   engine: 'lualatex',
+      //   return: 'pdf'
+      // });
+
+    });
   </script>
   <script src="js/header.js"></script>
 </body>
