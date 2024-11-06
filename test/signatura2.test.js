@@ -40,6 +40,10 @@ describe('generateCode function', () => {
     const text = "Základy sociální psychologie / Rudolf Kohoutek a kolektiv";
     expect(generateCode(text)).toBe("KoZá");
   });
+  it('should generate GoPr for title "Proměny rodiny v evropské historii : historicko-antropologická esej / Jack Goody ; [z anglického originálu European family, přeložila Petra Diestlerová]"', async () => {
+    const text = "Proměny rodiny v evropské historii : historicko-antropologická esej / Jack Goody ; [z anglického originálu European family, přeložila Petra Diestlerová]"
+    expect(generateCode(text)).toBe("GoPr");
+  })
 });
 
 let table = `Typ změny	Titul	Cílové umístění	Čárový kód	Umístění	Popis	Typ signatury	Signatura	Přírůstkové číslo holdingu	Signatura jednotky	Výpůjční pravidla pro danou jednotku	Termín vrácení

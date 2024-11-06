@@ -43,7 +43,7 @@ function generateCode(text) {
   const [title, authors] = text.split("/").map(part => part.trim());
   
   // Extrahuje první záznam v seznamu autorů a rozdělí ho na jednotlivá slova
-  const firstAuthor = authors ? authors.split(",")[0].trim() : "";
+  const firstAuthor = authors ? authors.split(/,|;|\./)[0].trim() : "";
   const firstAuthorWords = firstAuthor.split(" ");
 
   // Kontrola, zda se v textu s autorem nachází výraz "a kolektiv" nebo podobný
