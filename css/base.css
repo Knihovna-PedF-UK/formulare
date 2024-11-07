@@ -1,0 +1,24 @@
+body{
+  margin: 0 auto;
+  padding: 2ch;
+  max-width: 84ch;
+} 
+table {
+  border-collapse: collapse;
+}
+th, td {
+  border: 1px solid #ddd;
+  padding: 10px;
+}
+header{
+  padding-bottom: 0.3rem; 
+  margin-bottom: 0.3rem;
+}
+#generovat{
+  visibility: hidden;
+}
+
+#tabulka{
+  margin-top: 1rem;
+}
+.error{background-color: red;}

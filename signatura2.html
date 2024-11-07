@@ -3,28 +3,7 @@
 <head>
   <meta charset="utf-8" />
 	<title>Tvorba druhých signatur</title>
-	<style>
-    body{
-      margin: 0 auto;
-      padding: 2ch;
-      max-width: 84ch;
-    } 
-		table {
-			border-collapse: collapse;
-		}
-		th, td {
-			border: 1px solid #ddd;
-			padding: 10px;
-		}
-    header{
-      padding-bottom: 0.3rem; 
-      margin-bottom: 0.3rem;
-    }
-    #generovat{
-      visibility: hidden;
-    }
-    .error{background-color: red;}
-	</style>
+  <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/tiny-brutalism.css">
   <script>
     //trik, abych mohl v importovaný knihovně použít moduly
@@ -37,6 +16,8 @@
 </head>
 <body>
   <header id="header">
+    <menu><a href="./index.html">Domů</a> | <a href="./signatury.html">Signatury</a> | <a href="./signatura2.html">Signatury 2</a></menu>
+
   </header>
 <template id="kniznistitky_sty">
 \ProvidesPackage{kniznistitky}
@@ -378,7 +359,6 @@
       }
 		});
 		generovat.addEventListener('click', () => {
-      console.log("ahoj");
       console.log(transformed);
       const texlive = new TeXLiveForm();
       const latexCode = generateLaTeX(transformed, signatura2_tex.content.textContent);
@@ -403,7 +383,7 @@
 
     });
   </script>
-  <script src="js/header.js"></script>
+  <!-- <script src="js/header.js"></script> -->
 </body>
 </html>
 
