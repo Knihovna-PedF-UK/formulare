@@ -1,5 +1,7 @@
 # HTML formuláře pro knihovnu PedF UK
 
+Tady je web: https://knihovna-pedf-uk.github.io/formulare/
+
 ## Build
 
 Web stránky se automaticky vytváří pomocí Github Actions. Pro lokální build je
