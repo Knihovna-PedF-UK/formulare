@@ -10,3 +10,9 @@ třeba nainstalovat TeX Live a do lokálního TEXMF adresáře
 - https://github.com/michal-h21/kniznistitky 
 
 Pak můžeme spustit `make` a v adresáři out budou vygenerované soubory.
+
+## Testování
+
+Potřebujeme nainstalovat [Jest](https://jestjs.io/). Pak můžeme spustit 
+
+    $ make test
