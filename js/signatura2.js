@@ -109,6 +109,7 @@ function renderTable(dataArray, container) {
       const tr = document.createElement('tr');
       transformTableOrder.forEach(name => {
         const td = document.createElement('td');
+        td.setAttribute("class", name)
         const cellData = rowData[name];
         td.textContent = cellData;
         tr.appendChild(td);
