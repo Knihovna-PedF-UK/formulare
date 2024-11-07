@@ -3,28 +3,7 @@
 <head>
   <meta charset="utf-8" />
 	<title>Tvorba druhých signatur</title>
-	<style>
-    body{
-      margin: 0 auto;
-      padding: 2ch;
-      max-width: 84ch;
-    } 
-		table {
-			border-collapse: collapse;
-		}
-		th, td {
-			border: 1px solid #ddd;
-			padding: 10px;
-		}
-    header{
-      padding-bottom: 0.3rem; 
-      margin-bottom: 0.3rem;
-    }
-    #generovat{
-      visibility: hidden;
-    }
-    .error{background-color: red;}
-	</style>
+  <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/tiny-brutalism.css">
   <script>
     //trik, abych mohl v importovaný knihovně použít moduly
@@ -37,6 +16,7 @@
 </head>
 <body>
   <header id="header">
+    ${header.html}
   </header>
 <template id="kniznistitky_sty">
 ${kniznistitky.sty}
@@ -120,7 +100,7 @@ ${signatura2.tex}
 
     });
   </script>
-  <script src="js/header.js"></script>
+  <!-- <script src="js/header.js"></script> -->
 </body>
 </html>
 
