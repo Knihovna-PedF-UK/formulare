@@ -37,9 +37,17 @@
 <body>
   <header id="header">
   </header>
-  <template id="signatura2_sty">
-    \newcommand\pokus[1]{\leavevmode\noindent hodnota: #1\par}
-  </template>
+<template id="kniznistitky_sty">
+${kniznistitky.sty}
+</template>
+
+<template id="stitky_oddily_tex">
+${stitky-oddily.tex}
+</template>
+
+<template id="stitky_sty">
+${stitky.sty}
+</template>
 
 	<h1>Tvorba druhých signatur</h1>
 	<textarea id="pole" rows="10" cols="50" placeholder="Zadejte text obsahující tabulku s položkami oddělenými tabulátorem"></textarea>
@@ -75,7 +83,7 @@
       console.log("ahoj");
       console.log(transformed);
       const texlive = new TeXLiveForm();
-      const signatura2_sty = document.getElementById("signatura2_sty");
+      const signatura2_sty = document.getElementById("kniznistitky_sty");
       console.log(signatura2_sty.content.textContent);
       // Příklad použití
       // texlive.submit([
