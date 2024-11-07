@@ -17,4 +17,8 @@ header{
 #generovat{
   visibility: hidden;
 }
+
+#tabulka{
+  margin-top: 1rem;
+}
 .error{background-color: red;}
