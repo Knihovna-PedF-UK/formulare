@@ -12,7 +12,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v2
@@ -23,10 +23,10 @@ jobs:
         run: mkdir -p data
 
       - name: Clone kniznistitky repository
-        run: git clone git@github.com:michal-h21/kniznistitky.git data/kniznistitky
+        run: git clone https://github.com/michal-h21/kniznistitky.git data/kniznistitky
 
       - name: Clone signatury repository
-        run: git clone git@github.com:michal-h21/signatury.git data/signatury
+        run: git clone https://github.com/michal-h21/signatury.git data/signatury
 
       - name: Move files to data directory
         run: |
