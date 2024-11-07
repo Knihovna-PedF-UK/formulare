@@ -10,9 +10,12 @@ SIGNATURY_STY_OUTPUT = $(DATA_DIR)/$(SIGNATURY_STY)
 .PHONY: test 
 
 all: $(DATA_DIR) $(STITKY_STY_OUTPUT) $(SIGNATURY_STY_OUTPUT) UPDATE_HTML
-$(DATA_DIR): 
+
+$(DATA_DIR): tpl/
 	mkdir -p data
-	cp tpl/* data
+	cp tpl/* data/
+
+
 
 $(STITKY_STY_OUTPUT): $(DATA_DIR)
 	cp `kpsewhich $(STITKY_STY)` $(DATA_DIR)
