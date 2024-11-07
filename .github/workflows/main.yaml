@@ -45,21 +45,10 @@ jobs:
           cp -r js/ out/
           cp -r css/ out/
 
-      - name: Upload updated HTML files
-        uses: actions/upload-artifact@v2
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          name: updated-html
-          path: out/
-          
-      # - name: Commit and push changes
-      #   run: |
-      #     git config --global user.name "github-actions[bot]"
-      #     git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-      #     git add out/
-      #     git commit -m "Update HTML files with data from repositories"
-      #     git push
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: out
+          publish_branch: gh-pages
 
-      # - name: Clean up data directory
-      #   run: rm -rf data
