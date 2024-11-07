@@ -20,3 +20,5 @@ $(SIGNATURY_STY_OUTPUT): $(DATA_DIR)
 
 UPDATE_HTML:
 	python replace_tags.py
+	cp -r js/ out/
+	cp -r css/ out/
