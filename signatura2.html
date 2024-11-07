@@ -66,7 +66,7 @@ ${signatura2.tex}
     const generovat = document.getElementById("generovat")
     const stitky_oddily = document.getElementById("stitky_oddily_tex");
     const signatura2_sty = document.getElementById("kniznistitky_sty");
-    const stitky = document.getElementById("stitky_sty");
+    const signatura2_tex = document.getElementById("signatura2_tex");
     const titul_col =1;
     const barcode_col = 3;
     const location_col = 4;
@@ -98,20 +98,25 @@ ${signatura2.tex}
       console.log("ahoj");
       console.log(transformed);
       const texlive = new TeXLiveForm();
-      console.log(signatura2_sty.content.textContent);
+      const latexCode = generateLaTeX(transformed, signatura2_tex.content.textContent);
+      // console.log(latexCode)
+      // console.log(signatura2_sty.content.textContent);
       // Příklad použití
-      // texlive.submit([
-      //   {
-      //     name: 'document.tex',
-      //     content: '\\documentclass{article}\\usepackage{kniznistitky}\\begin{document}\\pokus{Hello}\\end{document}'
-      //   },{
-      //     name: "kniznistitky.sty",
-      //     content: signatura2_sty.content.textContent
-      //  }
-      // ], {
-      //   engine: 'lualatex',
-      //   return: 'pdf'
-      // });
+      texlive.submit([
+        {
+          name: 'document.tex',
+          content: latexCode
+        },{
+          name: "kniznistitky.sty",
+          content: signatura2_sty.content.textContent
+        },{
+          name: "stitky-oddily.tex",
+          content: stitky_oddily.content.textContent
+       }
+      ], {
+        engine: 'lualatex',
+        return: 'pdf'
+      });
 
     });
   </script>
