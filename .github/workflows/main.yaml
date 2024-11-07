@@ -1,0 +1,65 @@
+name: Update HTML with Data from Repositories
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  update-html:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Create data directory
+        run: mkdir -p data
+
+      - name: Clone kniznistitky repository
+        run: git clone git@github.com:michal-h21/kniznistitky.git data/kniznistitky
+
+      - name: Clone signatury repository
+        run: git clone git@github.com:michal-h21/signatury.git data/signatury
+
+      - name: Move files to data directory
+        run: |
+          cp -r data/kniznistitky/* data/
+          cp -r data/signatury/* data/
+          cp tpl/* data/
+          rm -rf data/kniznistitky data/signatury
+
+      - name: Install dependencies
+        run: pip install bs4
+
+      - name: Run HTML update script
+        run: |
+          mkdir -p out
+          python replace_tags.py
+          cp -r js/ out/
+          cp -r css/ out/
+
+      - name: Upload updated HTML files
+        uses: actions/upload-artifact@v2
+        with:
+          name: updated-html
+          path: out/
+          
+      # - name: Commit and push changes
+      #   run: |
+      #     git config --global user.name "github-actions[bot]"
+      #     git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      #     git add out/
+      #     git commit -m "Update HTML files with data from repositories"
+      #     git push
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # - name: Clean up data directory
+      #   run: rm -rf data
