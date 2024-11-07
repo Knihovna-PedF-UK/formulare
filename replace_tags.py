@@ -1,6 +1,6 @@
 import os
 import re
-from bs4 import BeautifulSoup
+# from bs4 import BeautifulSoup
 
 # Cesty k adresářům
 data_dir = "data"
