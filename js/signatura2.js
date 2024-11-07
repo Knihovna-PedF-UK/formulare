@@ -149,7 +149,10 @@ function libraryCode(data){
 
 
 function generateLaTeX(dataArray, template){
-
+   // Zavoláme libraryCode na každou položku v dataArray a spojíme výsledné řetězce
+    const content = dataArray.map(item => libraryCode(item)).join("\n");
+    // Nahradíme řetězec ${content} ve template výsledným řetězcem
+    return template.replace('{{content}}', content);
 }
 
 
