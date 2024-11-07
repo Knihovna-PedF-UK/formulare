@@ -121,6 +121,20 @@ function renderTable(dataArray, container) {
   container.appendChild(table); // Přidá nově vytvořenou tabulku
 }
 
+// vytvoř tabulku s druhýma signaturama, abysme mohli otestovat
+function parseOddily(content) {
+    const hashTable = {};
+    const regex = /\\DefOddil\{([^}]+)\}\{([^}]+)\}\{([^}]*)\}\{([^}]+)\}\{([^}]+)\}\{([^}]+)\}/g;
+    let match;
+
+    while ((match = regex.exec(content)) !== null) {
+        const key = match[1];
+        hashTable[key] = true;
+    }
+
+    return hashTable;
+}
+
 // vytvořit LaTeXovej příkaz
 function libraryCode(data){
   // Základní prefix, který se změní podle location
@@ -145,6 +159,7 @@ module.exports = {
   parseTable, 
   renderTable,
   transformTable,
+  parseOddily,
   libraryCode,
   generateLaTeX
 };

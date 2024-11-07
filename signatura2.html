@@ -23,6 +23,7 @@
     #generovat{
       visibility: hidden;
     }
+    .error{background-color: red;}
 	</style>
   <link rel="stylesheet" href="css/tiny-brutalism.css">
   <script>
@@ -45,9 +46,6 @@ ${kniznistitky.sty}
 ${stitky-oddily.tex}
 </template>
 
-<template id="stitky_sty">
-${stitky.sty}
-</template>
 
 	<h1>Tvorba druhých signatur</h1>
 	<textarea id="pole" rows="10" cols="50" placeholder="Zadejte text obsahující tabulku s položkami oddělenými tabulátorem"></textarea>
@@ -60,6 +58,9 @@ ${stitky.sty}
 		const nacti = document.getElementById('nacti');
 		const tabulka = document.getElementById('tabulka');
     const generovat = document.getElementById("generovat")
+    const stitky_oddily = document.getElementById("stitky_oddily_tex");
+    const signatura2_sty = document.getElementById("kniznistitky_sty");
+    const stitky = document.getElementById("stitky_sty");
     const titul_col =1;
     const barcode_col = 3;
     const location_col = 4;
@@ -74,16 +75,23 @@ ${stitky.sty}
       }else{
         transformed = transformTable(hodnoty, titul_col, barcode_col, location_col, signatura_col, rules_col)
         renderTable(transformed, tabulka);
+        const signatury2 = parseOddily(stitky_oddily.content.textContent);
+        // validace 2. signatur v tabulce
+        const codeElements = document.querySelectorAll('.signatura');
+        codeElements.forEach(element => {
+          const textContent = element.textContent.trim(); // Načti a ořízni text
+          // Zkontroluj, jestli text je klíčem v hash tabulce signatury2
+          if (!signatury2.hasOwnProperty(textContent)) {
+            element.classList.add('error'); // Přidej třídu "error", pokud klíč existuje
+          }
+        });
         generovat.style.visibility = "visible";
-
-
       }
 		});
 		generovat.addEventListener('click', () => {
       console.log("ahoj");
       console.log(transformed);
       const texlive = new TeXLiveForm();
-      const signatura2_sty = document.getElementById("kniznistitky_sty");
       console.log(signatura2_sty.content.textContent);
       // Příklad použití
       // texlive.submit([
