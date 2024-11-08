@@ -50,7 +50,15 @@ Be11092a
     })
 		generovat.addEventListener('click', () => {
       const texlive = new TeXLiveForm();
-      const latexCode = generateSignatury(hodnoty, signatury_tex.content.textContent);
+      // Načtení hodnot z inputů
+      const rowValue = document.getElementById("row").value;
+      const columnValue = document.getElementById("column").value;
+
+      // Převod na integery
+      const row = parseInt(rowValue, 10);
+      const column = parseInt(columnValue, 10);
+      const zacatek = (column - 1) * 13 + row - 1
+      const latexCode = generateSignatury(hodnoty, signatury_tex.content.textContent, zacatek);
       console.log(latexCode)
       // console.log(signatura2_sty.content.textContent);
       texlive.submit([

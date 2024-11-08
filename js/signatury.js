@@ -32,9 +32,13 @@ function signaturyCode(str){
   return `\\stitky{${str}}`
 }
 
-function generateSignatury(dataArray, template){
+function generateSignatury(dataArray, template, zacatek){
+  let buffer = []
+  for (let i = 0; i < zacatek; i++) {
+    buffer.push("\\stitky{}%");
+  }
   // Zavoláme signaturyCode na každou položku v dataArray a spojíme výsledné řetězce
-  const content = dataArray.map(item => signaturyCode(item)).join("\n");
+  const content = buffer.join("\n") + "\n" +dataArray.map(item => signaturyCode(item)).join("\n");
   return template.replace('{{content}}', content);
 }
 module.exports = {
