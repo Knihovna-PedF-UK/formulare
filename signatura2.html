@@ -23,7 +23,7 @@
 \ProvidesPackage{kniznistitky}
 \RequirePackage[cmyk,dvipsnames,x11names,svgnames]{xcolor}
 \RequirePackage{graphicx}
-\RequirePackage[code=Code39,H=5mm]{makebarcode}
+\RequirePackage[code=Code39,H=7mm,X=0.2mm]{makebarcode}
 \RequirePackage[margin=0pt,paperwidth=8.27in,paperheight=11.69in,top=5mm,bottom=2mm]{geometry}
 \RequirePackage{ncccropbox}
 \RequirePackage{etoolbox}
@@ -94,8 +94,9 @@
 \def\moduloop#1#2{(#1-\truncdiv{#1}{#2}*#2)}
 \def\modulo#1#2{\number\numexpr\moduloop{#1}{#2}\relax}
 \def\BreakBox#1{%
-	\advance\BoxBreak by 1\relax%
-	\if\modulo\BoxBreak30 #1\fi%
+	% \advance\BoxBreak by 1\relax%
+	% \if\modulo\BoxBreak30 #1\fi%
+  \allowbreak%
 }
 
 

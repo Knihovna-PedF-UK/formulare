@@ -18,6 +18,10 @@ header{
   visibility: hidden;
 }
 
+pre{
+  font-family: monospace,monospace;
+}
+
 #tabulka{
   margin-top: 1rem;
 }
