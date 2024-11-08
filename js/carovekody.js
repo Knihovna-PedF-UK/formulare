@@ -33,8 +33,13 @@ function barcode(items){
 }
 
 
-function generateBarcodes(dataArray, template){
+function generateBarcodes(dataArray, template, zacatek){
+  console.log(zacatek);
+  let buffer = []
+  for (let i = 0; i < zacatek; i++) {
+    buffer.push("\\EmptyBox%");
+  }
   // Zavoláme signaturyCode na každou položku v dataArray a spojíme výsledné řetězce
-  const content = dataArray.map(item => barcode(item)).join("\n");
+  const content = buffer.join("\n") + "\n" + dataArray.map(item => barcode(item)).join("\n");
   return template.replace('{{content}}', content);
 }

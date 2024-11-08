@@ -94,13 +94,13 @@
 \def\moduloop#1#2{(#1-\truncdiv{#1}{#2}*#2)}
 \def\modulo#1#2{\number\numexpr\moduloop{#1}{#2}\relax}
 \def\BreakBox#1{%
-	% \advance\BoxBreak by 1\relax%
-	% \if\modulo\BoxBreak30 #1\fi%
+	\advance\BoxBreak by 1\relax%
+	\if\modulo\BoxBreak30 #1\fi%
   \allowbreak%
 }
 
 
-\def\EmptyBox{\cropbox[69.90mm][32mm]{}\BreakBox{ }}
+\def\EmptyBox{\cropbox[69.90mm][32mm]{}\BreakBox\newline}
 \newcommand\DefOddil[6]{%
 \csgdef{#1}##1##2{\boxik{#2}{#3}{##1}{##2}{#4}{#5}}%
 }
@@ -319,10 +319,16 @@
 
 
 	<h1>Tvorba druhých signatur</h1>
-	<textarea id="pole" rows="10" cols="50" placeholder="Zadejte text obsahující tabulku s položkami oddělenými tabulátorem"></textarea>
-	<button id="nacti">Načíst data</button>
-  <button id="generovat">Generovat PDF</button>
-	<div id="tabulka"></div>
+
+  <textarea id="pole" rows="10" cols="50" placeholder="Zadejte data"></textarea>
+<details><summary>Nastavení</summary>
+  <legend>Startovací řádek: <input id="row" value="1" /></legend>
+  <legend>Startovací sloupec: <input id="column" value="1" /></legend>
+</details>
+<button id="nacti">Načíst data</button>
+<button id="generovat">Generovat PDF</button>
+<div id="tabulka"></div>
+
   <p>Tento formulář vytvoří štítky pro polepení knížek ve studovnách. Po tom, co změníte lokace a nastavíte druhé signatury ve skenování jednotek v Almě, stáhněte XLSX soubor (zvýrazněná ikonka na obrázku) a data z něj zkopírujte do vstupního políčka.</p>
   <figure>
     <a href="./img/skenovat_jednotky.png"><img src="./img/skenovat_jednotky.png" alt="screenshot skenování jednotek v Almě" style="max-width: 100%"/></a>
@@ -366,8 +372,16 @@
 		generovat.addEventListener('click', () => {
       console.log(transformed);
       const texlive = new TeXLiveForm();
-      const latexCode = generateLaTeX(transformed, signatura2_tex.content.textContent);
-      // console.log(latexCode)
+      // Načtení hodnot z inputů
+      const rowValue = document.getElementById("row").value;
+      const columnValue = document.getElementById("column").value;
+
+      // Převod na integery
+      const row = parseInt(rowValue, 10);
+      const column = parseInt(columnValue, 10);
+      const zacatek = (row - 1) * 3 + column - 1
+      const latexCode = generateLaTeX(transformed, signatura2_tex.content.textContent, zacatek);
+      console.log(latexCode)
       // console.log(signatura2_sty.content.textContent);
       // Příklad použití
       texlive.submit([

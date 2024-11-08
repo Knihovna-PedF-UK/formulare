@@ -144,10 +144,15 @@
   </header>
   <h1>Generování signatur</h1>
 
-	<textarea id="pole" rows="10" cols="50" placeholder="Zadejde seznam signatur, každá na samostatném řádku"></textarea>
-	<button id="nacti">Načíst data</button>
-  <button id="generovat">Generovat PDF</button>
-	<div id="tabulka"></div>
+  <textarea id="pole" rows="10" cols="50" placeholder="Zadejte data"></textarea>
+<details><summary>Nastavení</summary>
+  <legend>Startovací řádek: <input id="row" value="1" /></legend>
+  <legend>Startovací sloupec: <input id="column" value="1" /></legend>
+</details>
+<button id="nacti">Načíst data</button>
+<button id="generovat">Generovat PDF</button>
+<div id="tabulka"></div>
+
   <p>Každá signatura musí být na samostatném řádku. Řádky můžou obsahovat poznámky, ale až za signaturou. Příklad:</p>
   <pre>
 F35076   pozn. jen sign.
@@ -173,7 +178,15 @@ Be11092a
     })
 		generovat.addEventListener('click', () => {
       const texlive = new TeXLiveForm();
-      const latexCode = generateSignatury(hodnoty, signatury_tex.content.textContent);
+      // Načtení hodnot z inputů
+      const rowValue = document.getElementById("row").value;
+      const columnValue = document.getElementById("column").value;
+
+      // Převod na integery
+      const row = parseInt(rowValue, 10);
+      const column = parseInt(columnValue, 10);
+      const zacatek = (column - 1) * 13 + row - 1
+      const latexCode = generateSignatury(hodnoty, signatury_tex.content.textContent, zacatek);
       console.log(latexCode)
       // console.log(signatura2_sty.content.textContent);
       texlive.submit([

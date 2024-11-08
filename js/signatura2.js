@@ -137,6 +137,7 @@ function parseOddily(content) {
 
 // vytvořit LaTeXovej příkaz
 function libraryCode(data){
+  if(!data){return ""}
   // Základní prefix, který se změní podle location
   let prefix = data.location.includes("Celetná") ? "\\celetna" : "\\oddil";
     
@@ -144,15 +145,19 @@ function libraryCode(data){
   let loanType = data.rules.includes("Regular loan") ? "[green]" : "";
 
   // Sestavení řetězce s potřebnými argumenty
-  return `${prefix}${loanType}{${data.signatura}}{${data.code}}{${data.barcode}}`;
+  return `${prefix}${loanType}{${data.signatura}}{${data.code}}{${data.barcode}}%`;
 }
 
 
-function generateLaTeX(dataArray, template){
-   // Zavoláme libraryCode na každou položku v dataArray a spojíme výsledné řetězce
-    const content = dataArray.map(item => libraryCode(item)).join("\n");
-    // Nahradíme řetězec ${content} ve template výsledným řetězcem
-    return template.replace('{{content}}', content);
+function generateLaTeX(dataArray, template, zacatek){
+  let buffer = []
+  for (let i = 0; i < zacatek; i++) {
+    buffer.push("\\EmptyBox%");
+  }
+  // Zavoláme libraryCode na každou položku v dataArray a spojíme výsledné řetězce
+  const content = buffer.join("\n") + "\n" + dataArray.map(item => libraryCode(item)).join("\n");
+  // Nahradíme řetězec ${content} ve template výsledným řetězcem
+  return template.replace('{{content}}', content);
 }
 
 
