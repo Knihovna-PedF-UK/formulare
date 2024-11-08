@@ -19,8 +19,18 @@
       % \hspace{5mm}#1\hfill \textbf{#2}\hspace{5mm}\null
     \end{center}
     }
-  }\allowbreak%%
+  }\BreakBox\newline%%
 }%
+\def\EmptyBox{\cropbox[69.90mm][32mm]{}\BreakBox\newline}
+\newcount\BoxBreak
+\def\truncdiv#1#2{((#1-(#2-1)/2)/#2)}
+\def\moduloop#1#2{(#1-\truncdiv{#1}{#2}*#2)}
+\def\modulo#1#2{\number\numexpr\moduloop{#1}{#2}\relax}
+\def\BreakBox#1{%
+	\advance\BoxBreak by 1\relax%
+	\if\modulo\BoxBreak30 #1\fi%
+  \allowbreak%
+}
 \ExplSyntaxOff
 \begin{document}
 \parindent=0pt
