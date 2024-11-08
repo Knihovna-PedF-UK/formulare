@@ -1,0 +1,31 @@
+\documentclass{article}
+\usepackage[code=Code39,H=10mm, X=0.25mm]{makebarcode}
+\usepackage[margin=0pt,paperwidth=8.27in,paperheight=11.69in,top=5mm,bottom=2mm]{geometry}
+\usepackage{ncccropbox}
+\usepackage{fontspec}
+\setmainfont{Arial}
+\pagestyle{empty}
+\ExplSyntaxOn
+\newcommand\carovykod[2]{%
+  \cropbox[69.90mm][32mm]{%\kern 25mm
+    \parbox{66mm}{
+      \begin{center}
+      \fontsize{11}{11}\selectfont
+      Knihovna~PedF~UK\\[6pt]
+      \barcode{#1}\\[2pt]
+      #1\\[6pt]
+      \fontsize{13}{13}\selectfont
+      \textbf{#2}
+      % \hspace{5mm}#1\hfill \textbf{#2}\hspace{5mm}\null
+    \end{center}
+    }
+  }\allowbreak%%
+}%
+\ExplSyntaxOff
+\begin{document}
+\parindent=0pt
+
+{{content}}
+  
+\end{document}
+
