@@ -28,6 +28,7 @@ UPDATE_HTML:
 	python replace_tags.py
 	cp -r js/ out/
 	cp -r css/ out/
+	cp -r img/ out/
 
 test:
 	jest

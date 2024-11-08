@@ -44,6 +44,7 @@ jobs:
           python replace_tags.py
           cp -r js/ out/
           cp -r css/ out/
+          cp -r img/ out/
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
