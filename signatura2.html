@@ -79,8 +79,16 @@ ${signatura2.tex}
 		generovat.addEventListener('click', () => {
       console.log(transformed);
       const texlive = new TeXLiveForm();
-      const latexCode = generateLaTeX(transformed, signatura2_tex.content.textContent);
-      // console.log(latexCode)
+      // Načtení hodnot z inputů
+      const rowValue = document.getElementById("row").value;
+      const columnValue = document.getElementById("column").value;
+
+      // Převod na integery
+      const row = parseInt(rowValue, 10);
+      const column = parseInt(columnValue, 10);
+      const zacatek = (row - 1) * 3 + column - 1
+      const latexCode = generateLaTeX(transformed, signatura2_tex.content.textContent, zacatek);
+      console.log(latexCode)
       // console.log(signatura2_sty.content.textContent);
       // Příklad použití
       texlive.submit([
