@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Markdown to LaTeX Converter</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
+    }
+    textarea {
+      width: 100%;
+      height: 150px;
+      margin-bottom: 20px;
+      font-size: 1rem;
+      padding: 10px;
+    }
+    #output {
+      border: 1px solid #ccc;
+      padding: 10px;
+      font-family: monospace;
+      background-color: #f9f9f9;
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+
+  <h1>Markdown na LaTeX převodník</h1>
+  <p>Napište Markdown do textového pole níže. Výstup v LaTeXu se zobrazí pod ním:</p>
+
+  <textarea id="markdownInput" placeholder="Zadejte Markdown..."></textarea>
+  <pre id="output"></pre>
+
+  <script>
+
+
+    // latexRenderer.paragraph = function(text) {
+    //   return text + '\n\n';
+    // };
+
+
+    // latexRenderer.em = function(text) {
+    //   return `\\textit{${text}}`;
+    // };
+
+    // latexRenderer.list = function(body, ordered) {
+    //   const env = ordered ? 'enumerate' : 'itemize';
+    //   return `\\begin{${env}}\n${body}\\end{${env}}\n\n`;
+    // };
+
+    // latexRenderer.listitem = function(text) {
+    //   return `\\item ${text}\n`;
+    // };
+    
+
+    // Další prvky lze podle potřeby přidat
+
+    // Funkce aktualizující výstup při změně textu
+    document.getElementById('markdownInput').addEventListener('input', function() {
+      const markdown = this.value;
+      const renderer = {
+        heading({ tokens, depth }) {
+          const text = this.parser.parseInline(tokens);
+          const latexLevels = ["\\section", "\\subsection", "\\subsubsection", "\\paragraph", "\\subparagraph"];
+          return latexLevels[depth - 1] + `{${text}}\n\n`;
+        }, 
+        strong({tokens}) {
+          const text = this.parser.parseInline(tokens);
+          return `\\textbf{${text}}`;
+        },
+        em({tokens}) {
+          const text = this.parser.parseInline(tokens);
+          return `\\emph{${text}}`;
+        },
+        paragraph({tokens}) {
+          const text = this.parser.parseInline(tokens);
+          return `${text}\n\n`;
+        },
+        list({items, ordered, start}) {
+          const env = ordered ? 'enumerate' : 'itemize';
+          const newitems = []
+          items.forEach(item => {
+            newitems.push(this.listitem(item));
+          });
+          return `\\begin{${env}}\n${newitems.join("\n")}\\end{${env}}\n\n`;
+        },
+        listitem({tokens}) {
+          const text = this.parser.parseInline(tokens);
+          return `\\item ${text}\n`;
+        },
+
+      };
+
+      marked.use({ renderer: renderer });
+      const latex = marked.parse(markdown );
+      document.getElementById('output').textContent = latex;
+    });
+  </script>
+
+</body>
+</html>
