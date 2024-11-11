@@ -36,6 +36,14 @@
   <pre id="output"></pre>
 
   <script>
+function findFirstUniqueChar(str1, str2) {
+    for (let char of str1) {
+        if (!str2.includes(char)) {
+            return char;
+        }
+    }
+    return null;
+}
 
 
     // latexRenderer.paragraph = function(text) {
@@ -91,6 +99,29 @@
         listitem({tokens}) {
           const text = this.parser.parseInline(tokens);
           return `\\item ${text}\n`;
+        },
+        hr({tokens}) {
+          return "\\dotfill{}\n\n"
+        },
+        codespan({text}){
+          const char = findFirstUniqueChar("|=+-@_^!#", text)
+          if(char === null) {
+            return `\\texttt{${text}}`
+          }
+          return `\\verb${char}${text}${char}`
+        },
+        link({href, title, tokens}){
+          const text = this.parser.parseInline(tokens);
+          return `\\qrlink{${href}}{${text}}`
+        },
+        table(token){
+          token.header.every(str => console.log(str));
+          if (token.header.every(str => str.text.trim() === "")){
+            console.log("not empty");
+          } 
+
+
+
         },
 
       };
