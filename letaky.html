@@ -18,118 +18,64 @@
       font-size: 1rem;
       padding: 10px;
     }
-    #output {
+    #tabulka {
       border: 1px solid #ccc;
       padding: 10px;
       font-family: monospace;
       background-color: #f9f9f9;
+      white-space: pre;
+      display: none;
     }
   </style>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/tiny-brutalism.css">
+  <script>
+    //trik, abych mohl v importovaný knihovně použít moduly
+    module = {};
+  </script>
+  <script src="js/texlive-compile.js" type="text/javascript"></script>
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="js/markdown.js" type="text/javascript"></script>
 </head>
 <body>
 
+  <header id="header">
+    ${header.html}
+  </header>
   <h1>Markdown na LaTeX převodník</h1>
-  <p>Napište Markdown do textového pole níže. Výstup v LaTeXu se zobrazí pod ním:</p>
+  ${formular.html}
+  <p>Napište Markdown do textového pole hahoře. Výstup v LaTeXu se zobrazí pod ním:</p>
 
-  <textarea id="markdownInput" placeholder="Zadejte Markdown..."></textarea>
+  <!-- <textarea id="markdownInput" placeholder="Zadejte Markdown..."></textarea> -->
   <pre id="output"></pre>
 
   <script>
 function findFirstUniqueChar(str1, str2) {
-    for (let char of str1) {
-        if (!str2.includes(char)) {
-            return char;
-        }
+  for (let char of str1) {
+    if (!str2.includes(char)) {
+      return char;
     }
-    return null;
+  }
+  return null;
 }
 
+function columnalign(token){
+  // get LaTeX table align from markdown table align
+  let aligns = {left: "l", right : "r", center: "c" }
+  return token.align ? aligns[token.align] : "l";
+}
 
-    // latexRenderer.paragraph = function(text) {
-    //   return text + '\n\n';
-    // };
-
-
-    // latexRenderer.em = function(text) {
-    //   return `\\textit{${text}}`;
-    // };
-
-    // latexRenderer.list = function(body, ordered) {
-    //   const env = ordered ? 'enumerate' : 'itemize';
-    //   return `\\begin{${env}}\n${body}\\end{${env}}\n\n`;
-    // };
-
-    // latexRenderer.listitem = function(text) {
-    //   return `\\item ${text}\n`;
-    // };
-    
-
-    // Další prvky lze podle potřeby přidat
-
+const pole = document.getElementById('pole');
+const generovat = document.getElementById("generovat")
+const tabulka = document.getElementById('tabulka');
     // Funkce aktualizující výstup při změně textu
-    document.getElementById('markdownInput').addEventListener('input', function() {
-      const markdown = this.value;
-      const renderer = {
-        heading({ tokens, depth }) {
-          const text = this.parser.parseInline(tokens);
-          const latexLevels = ["\\section", "\\subsection", "\\subsubsection", "\\paragraph", "\\subparagraph"];
-          return latexLevels[depth - 1] + `{${text}}\n\n`;
-        }, 
-        strong({tokens}) {
-          const text = this.parser.parseInline(tokens);
-          return `\\textbf{${text}}`;
-        },
-        em({tokens}) {
-          const text = this.parser.parseInline(tokens);
-          return `\\emph{${text}}`;
-        },
-        paragraph({tokens}) {
-          const text = this.parser.parseInline(tokens);
-          return `${text}\n\n`;
-        },
-        list({items, ordered, start}) {
-          const env = ordered ? 'enumerate' : 'itemize';
-          const newitems = []
-          items.forEach(item => {
-            newitems.push(this.listitem(item));
-          });
-          return `\\begin{${env}}\n${newitems.join("\n")}\\end{${env}}\n\n`;
-        },
-        listitem({tokens}) {
-          const text = this.parser.parseInline(tokens);
-          return `\\item ${text}\n`;
-        },
-        hr({tokens}) {
-          return "\\dotfill{}\n\n"
-        },
-        codespan({text}){
-          const char = findFirstUniqueChar("|=+-@_^!#", text)
-          if(char === null) {
-            return `\\texttt{${text}}`
-          }
-          return `\\verb${char}${text}${char}`
-        },
-        link({href, title, tokens}){
-          const text = this.parser.parseInline(tokens);
-          return `\\qrlink{${href}}{${text}}`
-        },
-        table(token){
-          token.header.every(str => console.log(str));
-          if (token.header.every(str => str.text.trim() === "")){
-            console.log("not empty");
-          } 
-
-
-
-        },
-
-      };
-
-      marked.use({ renderer: renderer });
-      const latex = marked.parse(markdown );
-      document.getElementById('output').textContent = latex;
-    });
+nacti.addEventListener('click', () => {
+  const markdown = pole.value;
+  const latex = marked.parse(markdown );
+  tabulka.textContent = latex;
+  tabulka.style.display = "block";
+  generovat.style.visibility = "visible";
+});
   </script>
 
 </body>
