@@ -28,10 +28,14 @@ jobs:
       - name: Clone signatury repository
         run: git clone https://github.com/michal-h21/signatury.git data/signatury
 
+      - name: Clone pedfstyles repository
+        run: git clone https://github.com/Knihovna-PedF-UK/pedfstyles.git data/pedfstyles
+
       - name: Move files to data directory
         run: |
           cp -r data/kniznistitky/* data/
           cp -r data/signatury/* data/
+          cp -r data/pedfstyles/* data/
           cp tpl/* data/
           rm -rf data/kniznistitky data/signatury
 
