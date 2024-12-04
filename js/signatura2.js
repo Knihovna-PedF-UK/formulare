@@ -83,7 +83,7 @@ function transformTable(table, titul_col, barcode_col, location_col, signatura_c
   const radky = table.slice(1);
   return radky.map(row => {
     if(row.length > 0 && row[titul_col]){
-      console.log(row[titul_col]);
+      console.log(row[titul_col], row[rules_col], row[signatura_col]);
       return {
         titul : row[titul_col],
         barcode : row[barcode_col],
@@ -124,7 +124,7 @@ function renderTable(dataArray, container) {
 // vytvoř tabulku s druhýma signaturama, abysme mohli otestovat
 function parseOddily(content) {
     const hashTable = {};
-    const regex = /\\DefOddil\{([^}]+)\}\{([^}]+)\}\{([^}]*)\}\{([^}]+)\}\{([^}]+)\}\{([^}]+)\}/g;
+    const regex = /\\DefOddil\{([^}]+)\}\{([^}]+)\}\{([^}]*)\}\{([^}]+)\}\{([^}]+)\}\{([^}]*)\}/g;
     let match;
 
     while ((match = regex.exec(content)) !== null) {
