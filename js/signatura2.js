@@ -142,7 +142,7 @@ function libraryCode(data){
   let prefix = data.location.includes("Celetná") ? "\\celetna" : "\\oddil";
     
   // Podmínka pro pravidlo půjčky
-  let loanType = data.rules.includes("Regular loan") ? "[green]" : "";
+  let loanType = data.rules.includes("Regular loan") ? "[green]" : "[red]";
 
   // Sestavení řetězce s potřebnými argumenty
   return `${prefix}${loanType}{${data.signatura}}{${data.code}}{${data.barcode}}%`;
