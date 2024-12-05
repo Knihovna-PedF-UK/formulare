@@ -89,7 +89,7 @@
 % \hfill\null%
 %\bigskip
 %\vfill\null
-}\BreakBox\newline\kern-2pt}%
+}\BreakBox\newline}%
 
 \newcommand\celetnainfobox[2]{%\rotatebox{90}{\kern-18pt%
 		\colorbox{#1}{\vtop to 1.2em{\hbox to \dimexpr 24mm-1pt\relax{\sffamily\Large\hfill\textbf{#2}\hfill}}}%
@@ -100,7 +100,7 @@
 \def\moduloop#1#2{(#1-\truncdiv{#1}{#2}*#2)}
 \def\modulo#1#2{\number\numexpr\moduloop{#1}{#2}\relax}
 \def\BreakBox#1{%
-	\advance\BoxBreak by 1\relax%
+	\global\advance\BoxBreak by 1\relax%
 	\if\modulo\BoxBreak30 #1\fi%
   \allowbreak%
 }
@@ -320,8 +320,6 @@
 
 
 </template>
-
-
 
 
 	<h1>Tvorba druhých signatur</h1>
