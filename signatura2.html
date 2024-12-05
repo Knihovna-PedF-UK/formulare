@@ -29,7 +29,7 @@
 \ProvidesPackage{kniznistitky}
 \RequirePackage[cmyk,dvipsnames,x11names,svgnames]{xcolor}
 \RequirePackage{graphicx}
-\RequirePackage[code=Code39,H=7mm,X=0.2mm]{makebarcode}
+\RequirePackage[code=Code39,H=7mm,X=0.19mm]{makebarcode}
 \RequirePackage[margin=0pt,paperwidth=8.27in,paperheight=11.69in,top=5mm,bottom=2mm]{geometry}
 \RequirePackage{ncccropbox}
 \RequirePackage{etoolbox}
@@ -71,7 +71,7 @@
 \kern-3pt\barcode{#4}\\%
 {\small #4}\\%
 \end{tabular}%
-%\kern-4mm%
+\kern-3mm%
 % \hbox to 3mm{}%
 \begin{tabular}{l}%
 \infobox{\celetnabackground}{\strut%
@@ -92,7 +92,7 @@
 }\BreakBox\newline}%
 
 \newcommand\celetnainfobox[2]{%\rotatebox{90}{\kern-18pt%
-		\colorbox{#1}{\vtop to 1.2em{\hbox to \dimexpr 24mm-1pt\relax{\sffamily\Large\hfill\textbf{#2}\hfill}}}%
+		\colorbox{#1}{\vtop to 1.2em{\hbox to \dimexpr 22mm-1pt\relax{\sffamily\Large\hfill\textbf{#2}\hfill}}}%
 }%
 
 \newcount\BoxBreak
@@ -320,7 +320,6 @@
 
 
 </template>
-
 
 	<h1>Tvorba druhých signatur</h1>
 
