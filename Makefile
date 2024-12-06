@@ -7,9 +7,14 @@ ODDILY = stitky-oddily.tex
 SIGNATURY_STY = stitky.sty
 SIGNATURY_STY_OUTPUT = $(DATA_DIR)/$(SIGNATURY_STY)
 
+UKLOGO_STY = uklogo.sty
+UKLOGO_STY_OUTPUT = $(DATA_DIR)/$(UKLOGO_STY)
+UKLOGO_PATH = $(shell kpsewhich $(UKLOGO_STY))
+UKLOGO_DIR = $(shell dirname $(UKLOGO_PATH))
+
 .PHONY: test 
 
-all: $(DATA_DIR) $(STITKY_STY_OUTPUT) $(SIGNATURY_STY_OUTPUT) UPDATE_HTML
+all: $(DATA_DIR) $(STITKY_STY_OUTPUT) $(SIGNATURY_STY_OUTPUT) $(UKLOGO_STY_OUTPUT) UPDATE_HTML
 
 $(DATA_DIR): tpl/
 	mkdir -p data
@@ -23,6 +28,9 @@ $(STITKY_STY_OUTPUT): $(DATA_DIR)
 
 $(SIGNATURY_STY_OUTPUT): $(DATA_DIR)
 	cp `kpsewhich $(SIGNATURY_STY)` $(DATA_DIR)
+
+$(UKLOGO_STY_OUTPUT): $(DATA_DIR)
+	cp $(UKLOGO_DIR)/*.* $(DATA_DIR)
 
 UPDATE_HTML:
 	python replace_tags.py
