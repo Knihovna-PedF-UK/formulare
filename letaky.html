@@ -42,8 +42,17 @@
   <header id="header">
     ${header.html}
   </header>
-  <template id="sova-black_pdf">
+  <template id="sova_black_pdf">
     ${sova-black.pdf}
+  </template>
+  <template id="letaky_tex">
+    ${letaky.tex}
+  </template>
+  <template id="uklogo_sty">
+    ${uklogo.sty}
+  </template>
+  <template id="pedfstyles_sty">
+    ${pedfstyles.sty}
   </template>
   <h1>Cedule</h1>
   ${formular-markdown.html}
@@ -70,13 +79,49 @@ function columnalign(token){
 const pole = document.getElementById('pole');
 const generovat = document.getElementById("generovat")
 const tabulka = document.getElementById('tabulka');
+const uklogo_sty = document.getElementById("uklogo_sty");
+const letaky_tex = document.getElementById("letaky_tex");
+const pedfstyles_sty = document.getElementById("pedfstyles_sty");
+const sova_black_pdf = document.getElementById("sova_black_pdf");
+let latex = "";
     // Funkce aktualizující výstup při změně textu
 nacti.addEventListener('click', () => {
   const markdown = pole.value;
-  const latex = marked.parse(markdown );
+  latex = marked.parse(markdown );
   tabulka.textContent = latex;
   tabulka.style.display = "block";
   generovat.style.visibility = "visible";
+});
+generovat.addEventListener('click', () => {
+  const texlive = new TeXLiveForm();
+  // Načtení hodnot z inputů
+  const template = letaky_tex.content.textContent
+  const latexCode = template.replace('{{content}}', latex);
+  console.log(latexCode)
+  // podpora pro binární soubor
+  var data = Uint8Array.fromBase64(sova_black_pdf.content.textContent);
+  var blob = new Blob([data], {type: "application/pdf"});
+  var file = new File([blob], "sova-black.pdf");
+  // Příklad použití
+  texlive.submit([
+    {
+      name: 'document.tex',
+      content: latexCode
+    },{
+      name: "uklogo.sty",
+      content: uklogo_sty.content.textContent
+    },{
+      name: "pedfstyles.sty",
+      content: pedfstyles_sty.content.textContent
+    },{
+      name: "sova-black.pdf",
+      blob: file
+    }
+  ], {
+    engine: 'lualatex',
+    return: 'pdf'
+  });
+
 });
   </script>
 

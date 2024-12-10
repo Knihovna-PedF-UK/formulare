@@ -1,0 +1,35 @@
+\documentclass{article}
+\usepackage{fontspec}
+\usepackage{pedfstyles}
+\setmainfont{TeX Gyre Heros}
+\usepackage{uklogo}
+\usepackage[margin=2.5cm,left=2.5cm]{geometry}
+
+\usepackage{luavlna}
+\usepackage{fontawesome}
+\usepackage{eso-pic}
+
+% umístění loga do pravého horního rohu
+% \AddToShipoutPictureBG{
+% \AtTextUpperLeft{%
+% \vtop{
+% \null\hfill\logosova[32pt]
+% }
+% }}
+
+% umístění loga dolů
+\AddToShipoutPictureBG{
+\AtTextLowerLeft{%
+\vtop{\logosova[48pt]
+}
+}}
+
+
+\begin{document}
+\pagestyle{empty}
+
+\parindent=0pt
+
+{{content}}
+
+\end{document}
