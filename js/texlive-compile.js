@@ -66,13 +66,17 @@ class TeXLiveForm {
       filenameInput.value = file.name;
       form.appendChild(filenameInput);
 
-      // Filecontents pole
-      const contentInput = document.createElement('textarea');
-      // contentInput.type = 'text';
-      contentInput.style = "visibility:hidden";
-      contentInput.name = 'filecontents[]';
-      contentInput.textContent = file.content;
-      form.appendChild(contentInput);
+      const fileInput = document.createElement('input');
+      fileInput.type = 'file';
+      fileInput.name = 'filecontents[]';
+      // podpora pro binární soubory. použít klíč blob místo content (viz letaky.html)
+      const dataTransfer = new DataTransfer();
+      const fileObject = new File([file.blob || file.content], file.name, {
+        type: file.type || 'application/octet-stream',
+      });
+      dataTransfer.items.add(fileObject);
+      fileInput.files = dataTransfer.files;
+      form.appendChild(fileInput);
     });
 
     return form;
