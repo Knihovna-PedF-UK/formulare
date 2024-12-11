@@ -345,9 +345,6 @@ generovat.addEventListener('click', () => {
   const latexCode = template.replace('{{content}}', latex);
   console.log(latexCode)
   // podpora pro binární soubor
-  var data = Uint8Array.fromBase64(sova_black_pdf.content.textContent);
-  var blob = new Blob([data], {type: "application/pdf"});
-  var file = new File([blob], "sova-black.pdf");
   // Příklad použití
   texlive.submit([
     {
@@ -361,7 +358,8 @@ generovat.addEventListener('click', () => {
       content: pedfstyles_sty.content.textContent
     },{
       name: "sova-black.pdf",
-      blob: file
+      type:  "application/pdf",
+      data: sova_black_pdf.content.textContent
     }
   ], {
     engine: 'lualatex',

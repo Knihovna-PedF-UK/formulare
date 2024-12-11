@@ -65,6 +65,11 @@ class TeXLiveForm {
       filenameInput.name = 'filename[]';
       filenameInput.value = file.name;
       form.appendChild(filenameInput);
+      if(file.data){
+        var data = Uint8Array.fromBase64(file.data);
+        var blob = new Blob([data], {type: file.type});
+        file.blob = new File([blob], file.name);
+      }
 
       const fileInput = document.createElement('input');
       fileInput.type = 'file';
