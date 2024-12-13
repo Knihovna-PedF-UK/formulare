@@ -29,7 +29,7 @@ const renderer = {
     return `\\item ${text}\n`;
   },
   hr({tokens}) {
-    return "\\dotfill{}\n\n"
+    return "\\bigskip\n\n"
   },
   codespan({text}){
     const char = findFirstUniqueChar("|=+-@_^!#", text)
@@ -74,10 +74,10 @@ const renderer = {
     }
     // if (body) body = `${body}</tbody>`;
 
-    return '\\begin{tabular}{' + aligns +'}\n'
+    return '\\begingroup\n\\addfontfeature{Numbers={Tabular}}\n\\tabcolsep=1pt\n\\begin{tabular}{' + aligns +'}\n'
       + header
       + body
-      + '\\end{tabular}\n';
+      + '\\end{tabular}\n\\endgroup\n';
   }, 
   tablerow({text}){
     return `${text}\\\\\n`;
