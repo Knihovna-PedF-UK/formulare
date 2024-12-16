@@ -26,6 +26,15 @@
       white-space: pre;
       display: none;
     }
+    pre {
+      border: 1px solid #ccc;
+      padding: 10px;
+      font-family: monospace;
+      background-color: #f9f9f9;
+    }
+    article {
+      margin-top: 1rem;
+    }
   </style>
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/tiny-brutalism.css">
@@ -69,7 +78,29 @@
   </template>
   <h1>Cedule</h1>
   ${formular-markdown.html}
-  <p>Tvorba cedulí pro knihovnu. Můžete použít <a href="https://jecas.cz/markdown">Markdown</a>.</p>
+  <article>
+  <p>Tvorba cedulí pro knihovnu. Můžete použít <a href="https://jecas.cz/markdown">Markdown</a>. Příklad:</p>
+<pre>
+# Nadpis
+
+Text oznámení. *Text v kurzívě* a **text tučně**. 
+
+Tři spojovníky vloží mezeru na dva řádky:
+
+---
+
+## Otevírací doba
+
+Po–čt | 8.00 – 18.00
+------|-------------
+Pá    | 8:00 – 17.00
+</pre>
+
+<h2>Nastavení</h2>
+<p>
+V nastavení můžete zvolit, jestli zobrazovat logo. Také můžete přidat odkaz jako QR kód. Popisek a odkaz můžete vybrat z předpřipravených hodnot.
+</p>
+  </article>
 
   <!-- <textarea id="markdownInput" placeholder="Zadejte Markdown..."></textarea> -->
 

@@ -74,7 +74,7 @@ const renderer = {
     }
     // if (body) body = `${body}</tbody>`;
 
-    return '\\begingroup\n\\addfontfeature{Numbers={Tabular}}\n\\tabcolsep=1pt\n\\begin{tabular}{' + aligns +'}\n'
+    return '\\begingroup\n\\addfontfeature{Numbers={Tabular}}\n\\begin{tabular}{@{}' + aligns +'}\n'
       + header
       + body
       + '\\end{tabular}\n\\endgroup\n';
