@@ -26,6 +26,15 @@
       white-space: pre;
       display: none;
     }
+    pre {
+      border: 1px solid #ccc;
+      padding: 10px;
+      font-family: monospace;
+      background-color: #f9f9f9;
+    }
+    article {
+      margin-top: 1rem;
+    }
   </style>
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/tiny-brutalism.css">
@@ -56,13 +65,17 @@
     \documentclass{article}
 \usepackage{fontspec}
 \usepackage{pedfstyles}
+\usepackage{titlesec}
 \setmainfont{TeX Gyre Heros}
 \usepackage{uklogo}
 \usepackage[margin=2.5cm,left=2.5cm]{geometry}
 
+
+\usepackage[czech]{babel}
 \usepackage{luavlna}
 \usepackage{fontawesome}
 \usepackage{eso-pic}
+\usepackage[characters=66,lineheight=1.2,scale=golden]{responsive}
 
 % umístění loga do pravého horního rohu
 % \AddToShipoutPictureBG{
@@ -73,17 +86,30 @@
 % }}
 
 % umístění loga dolů
-\AddToShipoutPictureBG{
-\AtTextLowerLeft{%
-\vtop{\logosova[48pt]
-}
-}}
 
+\titleformat{\section}[block]
+{\normalfont\huge\bfseries\raggedright}{}{0pt}{}[\vskip2\baselineskip]
+
+
+\titleformat{\subsection}[block]
+  {\normalfont\bfseries}{}{0pt}{}
+
+\titleformat{\subsubsection}[block]
+  {\normalfont\bfseries}{}{0pt}{}
 
 \begin{document}
+
 \pagestyle{empty}
 
+\raggedright
+
 \parindent=0pt
+\parskip=1em
+
+
+{{qrcode}}
+
+{{logo-bottom}}
 
 {{content}}
 
@@ -292,24 +318,71 @@
 \endinput
 
   </template>
+  <template id="logo-bottom">
+\setbox1=\vtop{\logosova[48pt]}
+\ExplSyntaxOn
+\AddToHook{shipout/background}{\put(2cm,\dim_eval:n{-28.7cm + 2\ht1+2\dp1}){\parbox[b][][b]{\the\wd1}{\box1}}}
+\ExplSyntaxOff
+  </template>
+  <template id="qrcode">
+\setbox0=\hbox{\parbox[b][][b]{7em}{\raggedright\qrbox{{{text}}}{{{url}}}}}
+\ExplSyntaxOn
+\AddToHook{shipout/background}
+{\put(\dim_eval:n{20cm-\wd0},\dim_eval:n{-28.7cm + \ht0+\dp0-\baselineskip}){\box0}}
+\ExplSyntaxOff
+  </template>
   <h1>Cedule</h1>
   <textarea id="pole" rows="10" cols="50" placeholder="Zadejte data"></textarea>
 <details><summary>Nastavení</summary>
   <!-- <legend>Startovací řádek: <input id="row" value="1" /></legend> -->
   <!-- <legend>Startovací sloupec: <input id="column" value="1" /></legend> -->
-  <legend>Zobrazit logo: <select id="position-select" name="position">
+  <label>Zobrazit logo: <select id="position-select" name="position">
     <option value="bottom">Dole</option>
-    <option value="top" >Nahoře</option>
+    <!-- <option value="top" >Nahoře</option> -->
     <option value="hidden">Nezobrazovat</option>
   </select>
-  </legend>
+   </label>
+  <label for="qr-text">Popisek QR kódu</label>
+  <input type="text" id="qr-text" list="suggestions" />
+  <datalist id="suggestions">
+    <option value="Další informace o provozní době naleznete zde:"></option>
+    <option value="Detailní otevírací doba / Full Opening Hours:"></option>
+  </datalist>
+  <label for="qr-link">Odkaz do QR kódu</label>
+  <input type="text" id="qr-link" list="qr-suggestions" />
+  <datalist id="qr-suggestions">
+    <option value="bit.ly/3qN7E4g">Provozní doba</option>
+  </datalist>
+
 
 </details>
 <button id="nacti">Načíst data</button>
 <button id="generovat">Generovat PDF</button>
 <div id="tabulka"></div>
 
-  <p>Tvorba cedulí pro knihovnu. Můžete použít <a href="https://jecas.cz/markdown">Markdown</a>.</p>
+  <article>
+  <p>Tvorba cedulí pro knihovnu. Můžete použít <a href="https://jecas.cz/markdown">Markdown</a>. Příklad:</p>
+<pre>
+# Nadpis
+
+Text oznámení. *Text v kurzívě* a **text tučně**. 
+
+Tři spojovníky vloží mezeru na dva řádky:
+
+---
+
+## Otevírací doba
+
+Po–čt | 8.00 – 18.00
+------|-------------
+Pá    | 8:00 – 17.00
+</pre>
+
+<h2>Nastavení</h2>
+<p>
+V nastavení můžete zvolit, jestli zobrazovat logo. Také můžete přidat odkaz jako QR kód. Popisek a odkaz můžete vybrat z předpřipravených hodnot.
+</p>
+  </article>
 
   <!-- <textarea id="markdownInput" placeholder="Zadejte Markdown..."></textarea> -->
 
@@ -336,6 +409,12 @@ const uklogo_sty = document.getElementById("uklogo_sty");
 const letaky_tex = document.getElementById("letaky_tex");
 const pedfstyles_sty = document.getElementById("pedfstyles_sty");
 const sova_black_pdf = document.getElementById("sova_black_pdf");
+const position = document.getElementById("position-select");
+const logo_bottom = document.getElementById("logo-bottom");
+const qr_text = document.getElementById("qr-text");
+const qr_link = document.getElementById("qr-link");
+const qr_code_tpl = document.getElementById("qrcode");
+
 let latex = "";
     // Funkce aktualizující výstup při změně textu
 nacti.addEventListener('click', () => {
@@ -349,7 +428,23 @@ generovat.addEventListener('click', () => {
   const texlive = new TeXLiveForm();
   // Načtení hodnot z inputů
   const template = letaky_tex.content.textContent
-  const latexCode = template.replace('{{content}}', latex);
+  let latexCode = template.replace('{{content}}', latex);
+  let logo_bottom_value = ""
+  let qr_code = "";
+  if(position.value == "bottom"){
+    logo_bottom_value = logo_bottom.content.textContent
+  } 
+
+  if(qr_link.value && qr_link.value != "") {
+    // console.log("qr_text: " + qr_text.value);
+    // console.log("qr_link: " + qr_link.value);
+    qr_code = qr_code_tpl.content.textContent;
+    qr_code = qr_code.replace("{{text}}", qr_text.value);
+    qr_code = qr_code.replace("{{url}}", qr_link.value);
+  }
+
+  latexCode = latexCode.replace("{{logo-bottom}}", logo_bottom_value)
+  latexCode = latexCode.replace("{{qrcode}}", qr_code);
   console.log(latexCode)
   // podpora pro binární soubor
   // Příklad použití
