@@ -1,13 +1,17 @@
 \documentclass{article}
 \usepackage{fontspec}
 \usepackage{pedfstyles}
+\usepackage{titlesec}
 \setmainfont{TeX Gyre Heros}
 \usepackage{uklogo}
 \usepackage[margin=2.5cm,left=2.5cm]{geometry}
 
+
+\usepackage[czech]{babel}
 \usepackage{luavlna}
 \usepackage{fontawesome}
 \usepackage{eso-pic}
+\usepackage[characters=66,lineheight=1.2,scale=golden]{responsive}
 
 % umístění loga do pravého horního rohu
 % \AddToShipoutPictureBG{
@@ -18,17 +22,30 @@
 % }}
 
 % umístění loga dolů
-\AddToShipoutPictureBG{
-\AtTextLowerLeft{%
-\vtop{\logosova[48pt]
-}
-}}
 
+\titleformat{\section}[block]
+{\normalfont\huge\bfseries\raggedright}{}{0pt}{}[\vskip\baselineskip]
+
+
+\titleformat{\subsection}[block]
+  {\normalfont\bfseries}{}{0pt}{}
+
+\titleformat{\subsubsection}[block]
+  {\normalfont\bfseries}{}{0pt}{}
 
 \begin{document}
+
 \pagestyle{empty}
 
+\raggedright
+
 \parindent=0pt
+\parskip=1em
+
+
+{{qrcode}}
+
+{{logo-bottom}}
 
 {{content}}
 

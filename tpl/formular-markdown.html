@@ -2,12 +2,24 @@
 <details><summary>Nastavení</summary>
   <!-- <legend>Startovací řádek: <input id="row" value="1" /></legend> -->
   <!-- <legend>Startovací sloupec: <input id="column" value="1" /></legend> -->
-  <legend>Zobrazit logo: <select id="position-select" name="position">
+  <label>Zobrazit logo: <select id="position-select" name="position">
     <option value="bottom">Dole</option>
-    <option value="top" >Nahoře</option>
+    <!-- <option value="top" >Nahoře</option> -->
     <option value="hidden">Nezobrazovat</option>
   </select>
-  </legend>
+   </label>
+  <label for="qr-text">Popisek QR kódu</label>
+  <input type="text" id="qr-text" list="suggestions" />
+  <datalist id="suggestions">
+    <option value="Další informace o provozní době naleznete zde:"></option>
+    <option value="Detailní otevírací doba / Full Opening Hours:"></option>
+  </datalist>
+  <label for="qr-link">Odkaz do QR kódu</label>
+  <input type="text" id="qr-link" list="qr-suggestions" />
+  <datalist id="qr-suggestions">
+    <option value="bit.ly/3qN7E4g">Provozní doba</option>
+  </datalist>
+
 
 </details>
 <button id="nacti">Načíst data</button>
