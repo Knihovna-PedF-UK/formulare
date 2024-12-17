@@ -29,7 +29,7 @@ const renderer = {
     return `\\item ${text}\n`;
   },
   hr({tokens}) {
-    return "\\bigskip\n\n"
+    return "\\bigskip\n\\bigskip\n\n"
   },
   codespan({text}){
     const char = findFirstUniqueChar("|=+-@_^!#", text)
