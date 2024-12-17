@@ -5,6 +5,7 @@
 \setmainfont{TeX Gyre Heros}
 \usepackage{uklogo}
 \usepackage[margin=2.5cm,left=2.5cm]{geometry}
+\usepackage{ragged2e}
 
 
 \usepackage[czech]{babel}
@@ -21,17 +22,52 @@
 % }
 % }}
 
-% umístění loga dolů
+% https://tex.stackexchange.com/a/703753/2891
+\newcommand{\balancebox}[2]% #1 = max width, #2 = contents
+{\begingroup% save registers
+  \dimendef\height=0
+  \dimendef\width=1
+  \dimendef\test=2
+  \settowidth{\test}{#2}% single line check
+  \width=#1\relax
+  \ifdim\test>\width
+    \settoheight{\height}{\parbox{#1}{\raggedright #2}}%
+    \loop
+      \advance\width by -1em
+      \settoheight{\test}{\parbox{\width}{\raggedright #2}}%
+      \ifdim\test=\height\repeat
+    \advance\width by 1em
+  \fi
+  \parbox{\width}{\raggedright\strut #2\strut}%
+\endgroup}
 
-\titleformat{\section}[block]
-{\normalfont\huge\bfseries\raggedright}{}{0pt}{}[\vskip2\baselineskip]
+
+
+% https://tex.stackexchange.com/a/705079/2891
+\protected\def\BalancedRagged{%
+  \leftskip     0pt%
+  \rightskip    0pt plus 10em%
+  \spaceskip=1\fontdimen2\font plus .5\fontdimen3\font minus 1.5\fontdimen4\font%
+  \xspaceskip=1\fontdimen2\font plus 1\fontdimen3\font minus 1\fontdimen4\font%
+  \parfillskip  0pt plus 15em%
+  \relax%
+}
+
+% \titleformat{\section}[block]
+% {\normalfont\huge\bfseries\BalancedRagged}{}{0pt}{}[\vskip2\baselineskip]
+
+% trošku si pohrajeme s balancováním titulku
+\renewcommand\section[1]{%
+  {\normalfont\huge\bfseries\balancebox{\textwidth}{#1}}\par\vskip2\baselineskip%
+}
+
 
 
 \titleformat{\subsection}[block]
-  {\normalfont\bfseries}{}{0pt}{}
+  {\normalfont\bfseries\BalancedRagged}{}{0pt}{}
 
 \titleformat{\subsubsection}[block]
-  {\normalfont\bfseries}{}{0pt}{}
+  {\normalfont\bfseries\BalancedRagged}{}{0pt}{}
 
 \begin{document}
 
