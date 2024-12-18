@@ -29,9 +29,11 @@
     pre {
       border: 1px solid #ccc;
       padding: 10px;
-      font-family: monospace;
+      font-family: monospace,monospace;
       background-color: #f9f9f9;
+      margin-bottom: 1rem;
     }
+    code{font-family: monospace,monospace;background-color: #f9f9f9;border: 1px solid #ccc;}
     article {
       margin-top: 1rem;
     }
@@ -309,9 +311,9 @@
 
 \providecommand{\balancebox}[2]% #1 = max width, #2 = contents
 {\begingroup% save registers
-  \dimendef\height=0
-  \dimendef\width=1
-  \dimendef\test=2
+  \dimendef\height=0%
+  \dimendef\width=1%
+  \dimendef\test=2%
   \settowidth{\test}{#2}% single line check
   \width=#1\relax
   \ifdim\test>\width
@@ -326,14 +328,14 @@
 \endgroup}
 
 
-\protected\def\BalancedRagged{
-\leftskip     0pt
-\rightskip    0pt plus 10em
-\spaceskip=1\fontdimen2\font plus .5\fontdimen3\font minus 1.5\fontdimen4\font
-\xspaceskip=1\fontdimen2\font plus 1\fontdimen3\font minus 1\fontdimen4\font
-\parfillskip  0pt plus 15em
-\relax
-}
+\protected\def\BalancedRagged{%
+\leftskip     0pt%
+\rightskip    0pt plus 10em%
+\spaceskip=1\fontdimen2\font plus .5\fontdimen3\font minus 1.5\fontdimen4\font%%
+\xspaceskip=1\fontdimen2\font plus 1\fontdimen3\font minus 1\fontdimen4\font%
+\parfillskip  0pt plus 15em%
+\relax%
+}%
 
 \titleformat{\section}[block]
 {}{}{0pt}{\normalfont\huge\bfseries\balancebox{\textwidth}}[\vskip\baselineskip]
@@ -409,9 +411,11 @@ Po–čt | 8.00 – 18.00
 Pá    | 8:00 – 17.00
 </pre>
 
+<p>Pro zalomení řádku použijte dvě zpětná lomítka (<code>\\</code>). Nezalomitelná mezera se vkládá pomocí tildy (<code>~</code>).</p>
+
 <h2>Nastavení</h2>
 <p>
-V nastavení můžete zvolit, jestli zobrazovat logo. Také můžete přidat odkaz jako QR kód. Popisek a odkaz můžete vybrat z předpřipravených hodnot.
+V nastavení můžete zvolit, jestli zobrazovat logo. Také můžete přidat odkaz jako QR kód. Popisek a odkaz můžete vybrat z předpřipravených hodnot. Oboje se snažte udržovat co nejkratší.
 </p>
   </article>
 
