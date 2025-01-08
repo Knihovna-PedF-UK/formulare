@@ -308,7 +308,7 @@
 % jen pro datumy během jednoho měsíce
 \newcommand\rozsah[2]{\datum{#1}\,--\,\datum{#2}}
 
-
+% https://tex.stackexchange.com/a/703753/2891
 \providecommand{\balancebox}[2]% #1 = max width, #2 = contents
 {\begingroup% save registers
   \dimendef\height=0%
@@ -324,10 +324,10 @@
       \ifdim\test=\height\repeat
     \advance\width by 1em
   \fi
-  \parbox{\width}{\BalancedRagged #2}%
+  \parbox{\width}{\strut\BalancedRagged #2\strut}%
 \endgroup}
 
-
+% https://tex.stackexchange.com/a/705079/2891
 \protected\def\BalancedRagged{%
 \leftskip     0pt%
 \rightskip    0pt plus 10em%
