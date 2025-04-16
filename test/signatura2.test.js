@@ -88,10 +88,10 @@ describe('transformTable', () => {
 
 describe('libraryCode', ()=> {
   it('should generate library codes', async () => {
-    expect(libraryCode(transformed[0])).toBe("\\oddil{PSYCH 4}{KoZá}{2599801586}%");
-    expect(libraryCode(transformed[1])).toBe("\\oddil{PSYCH 8}{PrPs}{2592232314}%");
+    expect(libraryCode(transformed[0])).toBe("\\oddil[red]{PSYCH 4}{KoZá}{2599801586}%");
+    expect(libraryCode(transformed[1])).toBe("\\oddil[red]{PSYCH 8}{PrPs}{2592232314}%");
     // tohle je knížka z Rettigovky
-    expect(libraryCode(transformed[2])).toBe("\\oddil{25/NEWZW}{GoPr}{2592240668}%");
+    expect(libraryCode(transformed[2])).toBe("\\oddil[red]{25/NEWZW}{GoPr}{2592240668}%");
     expect(libraryCode(transformed[3])).toBe("\\celetna[green]{25/NEWZW}{GoPr}{2592240668}%");
   });
 
