@@ -140,7 +140,7 @@ function parseOddily(content) {
 function libraryCode(data){
   if(!data){return ""}
   // Základní prefix, který se změní podle location
-  let prefix = data.location.includes("Celetná") ? "\\celetna" : "\\oddil";
+  let prefix = data.location.includes("Celetná") ? "\\celetna" : "\\rettigova";
     
   // Podmínka pro pravidlo půjčky
   let loanType = data.rules.includes("Regular loan") ? "[green]" : "[red]";
