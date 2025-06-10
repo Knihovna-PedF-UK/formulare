@@ -24,7 +24,7 @@ function extractSurname(authorText) {
   const words = authorText.trim().split(" ");
   
   // Kontrolujeme, zda poslední slova obsahují indikátory kolektivního autorství
-  const collectiveIndicators = /^(a|et|kolektiv|al\.|editor|\[.*|\(.*|\.\.\.|…)/i; 
+  const collectiveIndicators = /^(a|et|kolektiv|al\.|editor|kol\.|\[.*|\(.*|\.\.\.|…)/i; 
 
   // vracíme poslední slovo začínající na velký písmeno
   let lastWord = ""
@@ -47,11 +47,14 @@ function generateCode(text) {
   const firstAuthorWords = firstAuthor.split(" ");
 
   // Kontrola, zda se v textu s autorem nachází výraz "a kolektiv" nebo podobný
-  const hasCollectiveIndicator = /a kol|et al\.|\(ed.*\)/i.test(firstAuthor);
+  console.log(firstAuthor);
+  const hasCollectiveIndicator = /a kol$|et al$|\(ed$/i.test(firstAuthor);
   
   let surname = ""
   if(hasCollectiveIndicator) {
-    surname = extractSurname(firstAuthor);
+    //surname = extractSurname(firstAuthor);
+    console.log("kolektivní autorství");
+    surname = "";
   } else {
     if(firstAuthorWords.length <= 3 && firstAuthorWords[0]){
       surname = firstAuthorWords.slice(-1)[0];
