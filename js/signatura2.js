@@ -47,13 +47,11 @@ function generateCode(text) {
   const firstAuthorWords = firstAuthor.split(" ");
 
   // Kontrola, zda se v textu s autorem nachází výraz "a kolektiv" nebo podobný
-  console.log(firstAuthor);
   const hasCollectiveIndicator = /a kol$|et al$|\(ed$/i.test(firstAuthor);
   
   let surname = ""
   if(hasCollectiveIndicator) {
     //surname = extractSurname(firstAuthor);
-    console.log("kolektivní autorství");
     surname = "";
   } else {
     if(firstAuthorWords.length <= 3 && firstAuthorWords[0]){
