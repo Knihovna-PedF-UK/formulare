@@ -24,7 +24,7 @@ function extractSurname(authorText) {
   const words = authorText.trim().split(" ");
   
   // Kontrolujeme, zda poslední slova obsahují indikátory kolektivního autorství
-  const collectiveIndicators = /^(a|et|kolektiv|al\.|editor|\[.*|\(.*|\.\.\.|…)/i; 
+  const collectiveIndicators = /^(a|et|kolektiv|al\.|editor|kol\.|\[.*|\(.*|\.\.\.|…)/i; 
 
   // vracíme poslední slovo začínající na velký písmeno
   let lastWord = ""
@@ -47,11 +47,12 @@ function generateCode(text) {
   const firstAuthorWords = firstAuthor.split(" ");
 
   // Kontrola, zda se v textu s autorem nachází výraz "a kolektiv" nebo podobný
-  const hasCollectiveIndicator = /a kol|et al\.|\(ed.*\)/i.test(firstAuthor);
+  const hasCollectiveIndicator = /a kol$|et al$|\(ed$/i.test(firstAuthor);
   
   let surname = ""
   if(hasCollectiveIndicator) {
-    surname = extractSurname(firstAuthor);
+    //surname = extractSurname(firstAuthor);
+    surname = "";
   } else {
     if(firstAuthorWords.length <= 3 && firstAuthorWords[0]){
       surname = firstAuthorWords.slice(-1)[0];
@@ -139,7 +140,7 @@ function parseOddily(content) {
 function libraryCode(data){
   if(!data){return ""}
   // Základní prefix, který se změní podle location
-  let prefix = data.location.includes("Celetná") ? "\\celetna" : "\\oddil";
+  let prefix = data.location.includes("Celetná") ? "\\celetna" : "\\rettigova";
     
   // Podmínka pro pravidlo půjčky
   let loanType = data.rules.includes("Regular loan") ? "[green]" : "[red]";
