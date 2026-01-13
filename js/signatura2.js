@@ -72,6 +72,7 @@ function generateCode(text) {
     // : firstAuthorWords.slice(-1)[0].slice(0, 2) + title.slice(0, 2); // Jinak prvních 2 písmena příjmení a 2 písmena názvu
 }
 
+
 function parseTable(text) {
   if (text.trim() === '') {
     return [];
