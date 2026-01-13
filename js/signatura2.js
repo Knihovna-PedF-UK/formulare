@@ -60,6 +60,7 @@ function generateCode(text) {
       surname = "";
     }
   }
+
   const code = surname != ""
     ? surname.slice(0, 2) + title.slice(0, 2) // standardní kód
     : title.slice(0, 4); // pokud je více než tři slova, bere 4 písmena z názvu
