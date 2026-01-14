@@ -90,6 +90,36 @@
 %\vfill\null
 }\BreakBox\newline}%
 
+\newcommand\rettigovaboxik[6]{%
+  % \typeout{****************** \detokenize{#1, #2, #3, #4, #5, #6}}%
+\def\Iniciala{\FirstLetter#3{};}%
+\cropbox[69.90mm][32mm]{\kern 2mm%
+\begin{tabular}{l}%
+\sffamily\bfseries#1\ifx\relax#2\relax\else\space#2\fi/#3\\%
+%\vfill%%
+\kern-3pt\barcode{#4}\\%
+{\small #4}\\%
+\end{tabular}%
+\kern-3mm%
+% \hbox to 3mm{}%
+\begin{tabular}{l}%
+\infobox{\celetnabackground}{\strut%
+  \begingroup%
+  \setlength{\unitlength}{1cm}%
+  \begin{picture}(0,0)%
+    \put(0,0.15){\textcolor{\celetnakolecko}{\circle*{1em}}}%
+  \end{picture}%
+  \endgroup%
+}\\%
+\infobox{#5}{\strut#2}\\%
+\infobox{#6}{\strut#3}%\kern 2mm\vbox{%
+\end{tabular}%
+% \parindent=0pt%
+% \hfill\null%
+%\bigskip
+%\vfill\null
+}\BreakBox\newline}%
+
 \newcommand\celetnainfobox[2]{%\rotatebox{90}{\kern-18pt%
 		\colorbox{#1}{\vtop to 1.2em{\hbox to \dimexpr 22mm-1pt\relax{\sffamily\Large\hfill\textbf{#2}\hfill}}}%
 }%
@@ -133,7 +163,17 @@
 %   \endgroup%
 % }
 
-\let\rettigova\celetna
+% tohle je kopie boxíku z celetný, abysme použili novej design. 
+% změnili jsem jen příkaz pro boxík samotnej, protože v rettigovce chceme vypsat i číslo oddílu nad čárovym kódem
+\newcommand\rettigova[4][\celetnabackground]{%
+  \begingroup%
+  \let\boxik\rettigovaboxik%
+  \def\celetnakolecko{#1}%
+  \let\infobox\celetnainfobox%
+  \oddil{#2}{#3}{#4}%
+  \endgroup%
+}
+
 
 \AtBeginDocument{%
 \parindent=0pt
@@ -161,8 +201,12 @@
 % \DefOddil{CJ 2}{CJ}{2}{gray}{Fuchsia}{Německý jazyk}
 % \DefOddil{CJ 3}{CJ}{3}{gray}{Fuchsia}{Francouzský jazyk}
 % to budeme teprve dolaďovat
-\DefOddil{FR 1}{FR}{1}{lightgray}{Fuchsia}{Francouzský jazyk -- ??}
-\DefOddil{FR 2}{FR}{2}{lightgray}{Fuchsia}{Francouzský jazyk -- ??}
+\DefOddil{FR 1}{FR}{1}{lightgray}{Fuchsia}{Francouzský jazyk -- Jazykověda}
+\DefOddil{FR 2}{FR}{2}{lightgray}{Fuchsia}{Francouzský jazyk -- Didaktika}
+\DefOddil{FR 3}{FR}{3}{lightgray}{Fuchsia}{Francouzský jazyk -- Reálie}
+\DefOddil{FR 4}{FR}{4}{lightgray}{Fuchsia}{Francouzský jazyk -- Slovníky}
+\DefOddil{FR 5}{FR}{5}{lightgray}{Fuchsia}{Francouzský jazyk -- Příprava na zkoušky}
+\DefOddil{FR 6}{FR}{6}{lightgray}{Fuchsia}{Francouzský jazyk -- Literatura a literární věda}
 % \DefOddil{CJ 4}{CJ}{4}{gray}{Fuchsia}{Latina}
 \DefOddil{LAT}{LAT}{}{Fuchsia}{lightgray}{Latina}
 % ostatní jazyky taky asi rozprostřeme jinam
@@ -484,6 +528,7 @@
         generovat.style.visibility = "visible";
       }
 		});
+
 		generovat.addEventListener('click', () => {
       console.log(transformed);
       const texlive = new TeXLiveForm();
