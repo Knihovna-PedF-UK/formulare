@@ -38,7 +38,6 @@ function extractSurname(authorText) {
   return ""; // Vrací prázdný řetězec, pokud není příjmení nalezeno
 }
 
-
 function generateCode(text) {
   const [title, authors] = text.split("/").map(part => part.trim());
   
