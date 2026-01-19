@@ -10,7 +10,7 @@ describe('generateCode function', () => {
   
   it('should generate code "Spec" for long author info in "Speciálněpedagogická čítanka / Zdeňka Michalová ... [et al.] ; Blanka Housarová (editor)"', () => {
     const text = "Speciálněpedagogická čítanka / Zdeňka Michalová ... [et al.] ; Blanka Housarová (editor)";
-    expect(generateCode(text)).toBe("MiSp");
+    expect(generateCode(text)).toBe("Spec");
   });
   
   it('should generate code "NoTa" for title with no author like "Notable Title /"', () => {
@@ -88,10 +88,10 @@ describe('transformTable', () => {
 
 describe('libraryCode', ()=> {
   it('should generate library codes', async () => {
-    expect(libraryCode(transformed[0])).toBe("\\oddil[red]{PSYCH 4}{KoZá}{2599801586}%");
-    expect(libraryCode(transformed[1])).toBe("\\oddil[red]{PSYCH 8}{PrPs}{2592232314}%");
+    expect(libraryCode(transformed[0])).toBe("\\rettigova[red]{PSYCH 4}{KoZá}{2599801586}%");
+    expect(libraryCode(transformed[1])).toBe("\\rettigova[red]{PSYCH 8}{PrPs}{2592232314}%");
     // tohle je knížka z Rettigovky
-    expect(libraryCode(transformed[2])).toBe("\\oddil[red]{25/NEWZW}{GoPr}{2592240668}%");
+    expect(libraryCode(transformed[2])).toBe("\\rettigova[red]{25/NEWZW}{GoPr}{2592240668}%");
     expect(libraryCode(transformed[3])).toBe("\\celetna[green]{25/NEWZW}{GoPr}{2592240668}%");
   });
 
@@ -104,7 +104,7 @@ describe('generateLaTeX', () => {
 \\end{document}`
   it("should expand template", () => {
     const latexCode = generateLaTeX(transformed, template)
-    expect(latexCode.includes("\\oddil")).toBe(true);
+    expect(latexCode.includes("\\rettigova")).toBe(true);
     expect(latexCode.includes("\\celetna")).toBe(true);
   })
 })

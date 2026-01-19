@@ -24,7 +24,13 @@ function extractSurname(authorText) {
   const words = authorText.trim().split(" ");
   
   // Kontrolujeme, zda poslední slova obsahují indikátory kolektivního autorství
-  const collectiveIndicators = /^(a|et|kolektiv|al\.|editor|kol\.|\[.*|\(.*|\.\.\.|…)/i; 
+  // potřebujeme odstranit závorky z názvu pro správný testování kolektivního autorství
+  let clearAuthorText = authorText.replace(/[\[\]\(\)]/g, "");
+  const collectiveIndicators = /\b(et|al\.|editor|kol\.|\[.?|\(.?|\.\.\.|…)/i.test(clearAuthorText); 
+  console.log("Clear author text:", authorText, clearAuthorText, collectiveIndicators);
+  if (collectiveIndicators) {
+    return ""; // Vrací prázdný řetězec, pokud je kolektivní autorství
+  }
 
   // vracíme poslední slovo začínající na velký písmeno
   let lastWord = ""
@@ -35,7 +41,7 @@ function extractSurname(authorText) {
     lastWord = words[i]
   }
   
-  return ""; // Vrací prázdný řetězec, pokud není příjmení nalezeno
+  return lastWord; // Vrací prázdný řetězec, pokud není příjmení nalezeno
 }
 
 
@@ -43,27 +49,30 @@ function generateCode(text) {
   const [title, authors] = text.split("/").map(part => part.trim());
   
   // Extrahuje první záznam v seznamu autorů a rozdělí ho na jednotlivá slova
-  const firstAuthor = authors ? authors.split(/,|;|\./)[0].trim() : "";
+  const firstAuthor = authors ? authors.split(/;/)[0].trim() : "";
   const firstAuthorWords = firstAuthor.split(" ");
 
   // Kontrola, zda se v textu s autorem nachází výraz "a kolektiv" nebo podobný
-  const hasCollectiveIndicator = /a kol$|et al$|\(ed$/i.test(firstAuthor);
+  // const hasCollectiveIndicator = /a kol$|et al$|\(ed$/i.test(firstAuthor);
   
-  let surname = ""
-  if(hasCollectiveIndicator) {
-    //surname = extractSurname(firstAuthor);
-    surname = "";
-  } else {
-    if(firstAuthorWords.length <= 3 && firstAuthorWords[0]){
-      surname = firstAuthorWords.slice(-1)[0];
-    } else {
-      surname = "";
-    }
-  }
+  let  surname = extractSurname(firstAuthor);
+  //if(hasCollectiveIndicator) {
+  //  //surname = extractSurname(firstAuthor);
+  //  surname = "";
+  //} else {
+  //  if(firstAuthorWords.length <= 3 && firstAuthorWords[0]){
+  //    surname = firstAuthorWords.slice(-1)[0];
+  //  } else {
+  //    surname = "";
+  //  }
+  //}
+
+  // Odstranění mezer z názvu pro správné generování kódu, aby výslednej kód neobsahoval jen jedno písmeno z názvu, když název začíná jednoznakovym slovem
+  let titleWithoutSpaces = title.replace(/\s+/g, '');
 
   const code = surname != ""
-    ? surname.slice(0, 2) + title.slice(0, 2) // standardní kód
-    : title.slice(0, 4); // pokud je více než tři slova, bere 4 písmena z názvu
+    ? surname.slice(0, 2) + titleWithoutSpaces.slice(0, 2) // standardní kód
+    : titleWithoutSpaces.slice(0, 4); // pokud je více než tři slova, bere 4 písmena z názvu
   return code || ""; // Vrací prázdný řetězec, pokud není kód k dispozici
 
   // Generování kódu podle podmínek
