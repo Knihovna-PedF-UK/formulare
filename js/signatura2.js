@@ -35,10 +35,17 @@ function extractSurname(authorText) {
   // vracíme poslední slovo začínající na velký písmeno
   let lastWord = ""
   for (let i = 0; i <words.length; i++) {
-    if(!startsWithUppercase(words[i])){
-      if(i > 0) return lastWord;
+    let currentWord = words[i];
+    // tohle by mělo detekovat "a" mezi jmény, ale bejt ignorovaný když je to součástí textu před prvním autorem
+    if(currentWord == "a" && lastWord != ""){
+      console.log("Found 'a', returning last word:", lastWord);
+      return lastWord;
     }
-    lastWord = words[i]
+    if(startsWithUppercase(words[i])){
+      // if(i > 0) return lastWord;
+      console.log("Checking word:", currentWord);
+      lastWord = currentWord;
+    }
   }
   
   return lastWord; // Vrací prázdný řetězec, pokud není příjmení nalezeno

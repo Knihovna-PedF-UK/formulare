@@ -44,6 +44,46 @@ describe('generateCode function', () => {
     const text = "Proměny rodiny v evropské historii : historicko-antropologická esej / Jack Goody ; [z anglického originálu European family, přeložila Petra Diestlerová]"
     expect(generateCode(text)).toBe("GoPr");
   })
+  it('should generate PyMa for Malá encyklopedie českého humoru / napsal a sestavil Radko Pytlík', async () => {
+    const text = "Malá encyklopedie českého humoru / napsal a sestavil Radko Pytlík"
+    expect(generateCode(text)).toBe("PyMa");
+  })
+  it('should generate MáDí for Dílo : II., Prózy ; Zápisníky ; Deníky / čtenářský soubor. Karel Hanek Mácha ; uspořádal, k vydání připravil, vydavatelskou poznámku a doslov napsal Miloš Pohorský', async () => {
+    const text = "Dílo : II., Prózy ; Zápisníky ; Deníky / čtenářský soubor. Karel Hanek Mácha ; uspořádal, k vydání připravil, vydavatelskou poznámku a doslov napsal Miloš Pohorský"
+    expect(generateCode(text)).toBe("MáDí");
+  })
+  it('should generate DoRa for Ragtime / E.L. Doctorow ; [překlad Jiří Josek]', async () => {
+    const text = "Ragtime / E.L. Doctorow ; [překlad Jiří Josek]"
+    expect(generateCode(text)).toBe("DoRa");
+  })
+  it('should generate SlZd for Z deníku bulimičky / Jana Sladká-Ševčíková ; [úvodní slovo Jana Kocourková, Jiří Koutek]', async () => {
+    const text = "Z deníku bulimičky / Jana Sladká-Ševčíková ; [úvodní slovo Jana Kocourková, Jiří Koutek]"
+    expect(generateCode(text)).toBe("SlZd");
+  })
+  it('should generate GzZa for Zapomeňte, že jste měli dceru : "žila jsem s maniaky, zločinci a vrahy" : pravdivý příběh pašeračky drog, která přežila peklo thajské věznice / Sandra Gregoryová a Michaela Tierney ; [z anglického originálu ... přeložil Zdeněk Hnilička]', async () => {
+    const text = 'Zapomeňte, že jste měli dceru : "žila jsem s maniaky, zločinci a vrahy" : pravdivý příběh pašeračky drog, která přežila peklo thajské věznice / Sandra Gregoryová a Michaela Tierney ; [z anglického originálu ... přeložil Zdeněk Hnilička]';
+    expect(generateCode(text)).toBe("GrZa");
+  })
+  it('should generate TuOk for O kapku víc / Mariana Tutschová', async () => {
+    const text = 'O kapku víc / Mariana Tutschová';
+    expect(generateCode(text)).toBe("TuOk");
+  })
+  it('should generate PrKa for Kam zmizelo moře / Marjana & Taras Prochasko ; z ukrajinského originálu Kudy znyklo more. ... přeložila Jekaterina Gazukina', async () => {
+    const text = 'Kam zmizelo moře / Marjana & Taras Prochasko ; z ukrajinského originálu Kudy znyklo more. ... přeložila Jekaterina Gazukina';
+    expect(generateCode(text)).toBe("PrKa");
+  })
+  it('shold generate LaOc for O chytré kmotře lišce / vypravuje a kresbami doprovází Josef Lada ; [vybral a připravil Jan Vávra]', async () => {
+    const text = 'O chytré kmotře lišce / vypravuje a kresbami doprovází Josef Lada ; [vybral a připravil Jan Vávra]';
+    expect(generateCode(text)).toBe("LaOc");
+  })
+  it('should generate ShOd for Odpoutaný Prometheus : lyrické drama / P. B. Shelley ; [přeložil Jiří Valja ; doslov napsal Zdeněk Vančura]', async () => {
+    const text = 'Odpoutaný Prometheus : lyrické drama / P. B. Shelley ; [přeložil Jiří Valja ; doslov napsal Zdeněk Vančura]';
+    expect(generateCode(text)).toBe("ShOd");
+  })
+  it('should generate HiEx for Experimentální poezie / [výbor připravili, zahraniční texty přeložili, doslovem a komentářem opatřili Josef Hiršal a Bohumila Grögerová ; úvod napsal Miloš Jůzl]', async () => {
+    const text = 'Experimentální poezie / [výbor připravili, zahraniční texty přeložili, doslovem a komentářem opatřili Josef Hiršal a Bohumila Grögerová ; úvod napsal Miloš Jůzl]';
+    expect(generateCode(text)).toBe("HiEx");
+  })
 });
 
 let table = `Typ změny	Titul	Cílové umístění	Čárový kód	Umístění	Popis	Typ signatury	Signatura	Přírůstkové číslo holdingu	Signatura jednotky	Výpůjční pravidla pro danou jednotku	Termín vrácení
