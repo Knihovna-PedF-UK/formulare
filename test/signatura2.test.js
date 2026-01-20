@@ -19,7 +19,7 @@ describe('generateCode function', () => {
   });
   
   it('should handle missing title and author gracefully', () => {
-    const text = "/";
+    const text = " / ";
     expect(generateCode(text)).toBe("");
   });
   
@@ -83,6 +83,14 @@ describe('generateCode function', () => {
   it('should generate HiEx for Experimentální poezie / [výbor připravili, zahraniční texty přeložili, doslovem a komentářem opatřili Josef Hiršal a Bohumila Grögerová ; úvod napsal Miloš Jůzl]', async () => {
     const text = 'Experimentální poezie / [výbor připravili, zahraniční texty přeložili, doslovem a komentářem opatřili Josef Hiršal a Bohumila Grögerová ; úvod napsal Miloš Jůzl]';
     expect(generateCode(text)).toBe("HiEx");
+  })
+  it('should generate HaLo for Lover/Fighter / Kristina Hamplová ; ilustrace Martin Fischer', async () => {
+    const text = 'Lover/Fighter / Kristina Hamplová ; ilustrace Martin Fischer';
+    expect(generateCode(text)).toBe("HaLo");
+  })
+  it('should generate HaLo for Lover/Fighter / Kristina Hamplová, Martin Fischer', async () => {
+    const text = 'Lover/Fighter / Kristina Hamplová ; ilustrace Martin Fischer';
+    expect(generateCode(text)).toBe("HaLo");
   })
 });
 

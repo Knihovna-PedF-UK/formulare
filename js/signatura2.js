@@ -52,7 +52,7 @@ function extractSurname(authorText) {
 }
 
 function generateCode(text) {
-  const [title, authors] = text.split("/").map(part => part.trim());
+  const [title, authors] = text.split(" / ").map(part => part.trim());
   
   // Extrahuje první záznam v seznamu autorů a rozdělí ho na jednotlivá slova
   const firstAuthor = authors ? authors.split(/;/)[0].trim() : "";
