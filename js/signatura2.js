@@ -52,6 +52,9 @@ function extractSurname(authorText) {
 }
 
 function generateCode(text) {
+  if(text.trim() === ''){
+    return "";
+  }
   const [title, authors] = text.split(" / ").map(part => part.trim());
   
   // Extrahuje první záznam v seznamu autorů a rozdělí ho na jednotlivá slova
@@ -100,7 +103,7 @@ function transformTable(table, titul_col, barcode_col, location_col, signatura_c
   // ignorujeme první řádek
   const radky = table.slice(1);
   return radky.map(row => {
-    if(row.length > 0 && row[titul_col]){
+    if(row.length > 0 && row[barcode_col]){
       console.log(row[titul_col], row[rules_col], row[signatura_col]);
       return {
         titul : row[titul_col],
