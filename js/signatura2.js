@@ -19,6 +19,11 @@ function startsWithUppercase(word) {
   return /^[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ]/.test(word);
 }
 
+function endsWithComma(word) {
+  // testujeme, jestli má autor na konci čárku
+  return /,$/.test(word);
+}
+
 function extractSurname(authorText) {
   // Rozdělíme řetězec na jednotlivá slova
   const words = authorText.trim().split(" ");
@@ -33,6 +38,7 @@ function extractSurname(authorText) {
   }
 
   // vracíme poslední slovo začínající na velký písmeno
+  let lowerCased = 0
   let lastWord = ""
   for (let i = 0; i <words.length; i++) {
     let currentWord = words[i];
@@ -45,7 +51,12 @@ function extractSurname(authorText) {
       // if(i > 0) return lastWord;
       console.log("Checking word:", currentWord);
       lastWord = currentWord;
-    }
+      if(i > 0 && lowerCased == 0 && endsWithComma(lastWord) {
+        return lastWord;
+      }
+    } else {
+      lowerCased += 1;
+    } 
   }
   
   return lastWord; // Vrací prázdný řetězec, pokud není příjmení nalezeno
