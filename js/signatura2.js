@@ -51,7 +51,7 @@ function extractSurname(authorText) {
       // if(i > 0) return lastWord;
       console.log("Checking word:", currentWord);
       lastWord = currentWord;
-      if(i > 0 && lowerCased == 0 && endsWithComma(lastWord) {
+      if(i > 0 && lowerCased == 0 && endsWithComma(lastWord)) {
         return lastWord;
       }
     } else {
