@@ -88,7 +88,7 @@ function generateCode(text) {
   //}
 
   // Odstranění mezer z názvu pro správné generování kódu, aby výslednej kód neobsahoval jen jedno písmeno z názvu, když název začíná jednoznakovym slovem
-  let titleWithoutSpaces = title.replace(/\s+/g, '');
+  let titleWithoutSpaces = title.replace(/[\s\-\_\,„“]+/g, '');
 
   const code = surname != ""
     ? surname.slice(0, 2) + titleWithoutSpaces.slice(0, 2) // standardní kód
