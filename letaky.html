@@ -286,6 +286,7 @@
 \RequirePackage{kvoptions}
 \RequirePackage{array}
 \RequirePackage{titlesec}
+\RequirePackage{pict2e}
 %\RequirePackage{geometry}
 
 \definecolor{pedfcolor}{HTML}{ca3345}
@@ -347,6 +348,124 @@
 \titleformat{\subsubsection}[block]
   {}{}{0pt}{\normalfont\bfseries\BalancedRagged}
 
+
+\ExplSyntaxOn
+
+% ==========================================
+% DIMENSIONS AND GRID COORDINATES VARIABLES
+% ==========================================
+% Width and height of a single grid cell
+\dim_new:N \l_pedf_grid_x
+\dim_new:N \l_pedf_grid_y
+
+% Grid origin coordinates (relative to the page reference point)
+\dim_new:N \l_pedf_origin_x
+\dim_new:N \l_pedf_origin_y
+
+% Number of columns and rows (integer values)
+\int_new:N \l_pedf_grid_cols
+\int_new:N \l_pedf_grid_rows
+
+% ==========================================
+% GRID DIMENSION CALCULATION
+% ==========================================
+% Sets the number of columns/rows and calculates a single cell's size
+% #1 = number of columns, #2 = number of rows
+\NewDocumentCommand \calculategriddims { m m }
+  {
+    \int_set:Nn \l_pedf_grid_cols { #1 }
+    \int_set:Nn \l_pedf_grid_rows { #2 }
+    % Calculates cell width/height by dividing the page dimensions.
+    % Note: Wrapped in \dim_eval:n for safety, as recommended in expl3.
+    \dim_set:Nn \l_pedf_grid_x { \dim_eval:n { \paperwidth / #1 } }
+    \dim_set:Nn \l_pedf_grid_y { \dim_eval:n { \paperheight / #2 } }
+  }
+
+% ==========================================
+% ORIGIN COORDINATE SETUP
+% ==========================================
+% Shifts the grid origin by a specified number of cells
+% #1 = X shift, #2 = Y shift
+\NewDocumentCommand \setgridorigin { m m }
+  {
+    \dim_set:Nn \l_pedf_origin_x { \l_pedf_grid_x * #1 }
+    % Negative Y is used to convert between "grid" coordinates
+    % and the drawing coordinate system (often pointing down/negative).
+    \dim_set:Nn \l_pedf_origin_y { -\l_pedf_grid_y * #2 }
+  }
+
+% ==========================================
+% HELPER COMMANDS TO RETRIEVE DIMENSIONS
+% ==========================================
+% Returns the total width for a given number of columns (in dimension units)
+\NewDocumentCommand \getgridunitx { m }
+  { \dim_eval:n { \l_pedf_grid_x * #1 } }
+
+% Returns the total height for a given number of rows
+\NewDocumentCommand \getgridunity { m }
+  { \dim_eval:n { \l_pedf_grid_y * #1 } }
+
+% ==========================================
+% DEFAULT SETTINGS
+% ==========================================
+% 20 columns × 10 rows, origin at position [0,0]
+\calculategriddims { 20 } { 10 }
+\setgridorigin { 0 } { 0 }
+
+
+% ==========================================
+% PLACING CONTENT ON THE GRID
+% ==========================================
+% Temporary box to store and measure the inserted content
+\box_new:N \l_pedf_grid_box
+
+% Places content on the grid at a specified position
+% #1 = column, #2 = row, #3 = content (+m allows paragraph breaks)
+\NewDocumentCommand \putongrid { m m +m }
+  {
+    % Store content in a box to measure its height
+    \vbox_set:Nn \l_pedf_grid_box { #3 }
+    
+    % X coordinate calculation: origin shift + width × column position
+    \dim_set:Nn \l_tmpa_dim { \l_pedf_origin_x + \l_pedf_grid_x * #1 }
+    
+    % Y coordinate calculation: origin shift - height × row position - box height
+    % (Compensates for Y-axis direction and aligns content to the bottom edge)
+    \dim_set:Nn \l_tmpb_dim { \l_pedf_origin_y - \l_pedf_grid_y * #2 - \box_ht:N \l_pedf_grid_box }
+    
+    % Drawing using \put (standard picture mode)
+    \put ( \dim_use:N \l_tmpa_dim , \dim_use:N \l_tmpb_dim ) { \box_use:N \l_pedf_grid_box }
+  } 
+
+
+% ==========================================
+% CROPPING AN IMAGE TO A CIRCLE (l3draw)
+% ==========================================
+% Draws an image with a circular crop
+% [height] = image height (default 8cm), #1 = file path
+\NewDocumentCommand \circleimage { O { 8cm } m }
+  {
+    % Loads the image into a box to access its dimensions
+    \hbox_set:Nn \l_tmpa_box { \includegraphics [ height = #1 ] { #2 } }
+    
+    % Begins the l3draw drawing environment
+    \draw_begin:
+      % Defines the circular path. Radius = half the image height.
+      % (Original -0.5 was likely a typo; radius must be positive)
+      \draw_path_circle:nn { 0 , 0 } { 0.5 \box_ht:N \l_tmpa_box }
+      % Applies the clipping path and clears it from the stack
+      \draw_path_use_clear:n { clip }
+      
+      % Shifts the box so the image center aligns with [0,0]
+      % (Boxes are normally drawn with their reference point at the bottom-left)
+      \draw_transform_shift:n { -0.5 \box_wd:N \l_tmpa_box , -0.5 \box_ht:N \l_tmpa_box }
+      
+      % Draws the box (now clipped by the circular path)
+      \draw_box_use:N \l_tmpa_box
+    \draw_end:
+  }
+
+\ExplSyntaxOff
 
 
 \endinput
