@@ -1,0 +1,19 @@
+\documentclass{article}
+\usepackage{fontspec}
+\RequirePackage[cmyk,dvipsnames,x11names,svgnames]{xcolor}
+\pagestyle{empty}
+\usepackage[a4paper,margin=3cm]{geometry}
+\usepackage[characters=50]{responsive}
+\setmainfont{TeX Gyre Heros}
+\setsansfont{TeX Gyre Heros}
+\RequirePackage{ncccropbox} 
+
+
+\newcommand\cisloregalu[1]{\par\null\hfill\hbox{\Huge\bfseries#1}\par\null\vfill}
+\newcommand\nadpis[1]{\par\bigskip\null\bigskip\bgroup\large\textbf{#1}\egroup\par\medskip}
+\newcommand\radek[2]{\tabular{@{}p{0.2\textwidth}p{0.8\textwidth}@{}} #1 &  #2\\\endtabular\par}
+
+\begin{document}
+\parindent=0pt
+{{content}}
+\end{document}
