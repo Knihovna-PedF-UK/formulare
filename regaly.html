@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+	<title>Oddíly v regálech</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/tiny-brutalism.css">
+  <script>
+    //trik, abych mohl v importovaný knihovně použít moduly
+    module = {};
+  </script>
+  <script src="js/regaly.js" type="text/javascript"></script>
+  <script src="js/texlive-compile.js" type="text/javascript"></script>
+<style type="text/css">
+    #tabulka {
+      border: 1px solid #ccc;
+      padding: 10px;
+      font-family: monospace;
+      background-color: #f9f9f9;
+      white-space: pre;
+      display: none;
+    }
+</style>
+</head>
+<body>
+  <header id="header">
+    <menu>
+  <a href="./index.html">Domů</a> | 
+  <a href="./signatury.html">Signatury</a> | 
+  <a href="./signatura2.html">Signatury 2</a> | 
+  <a href="./carovekody.html">Čárové kódy</a> |
+  <a href="./letaky.html">Cedule</a>
+</menu>
+
+  </header>
+<template id="regaly_tex">
+\documentclass{article}
+\usepackage{fontspec}
+\RequirePackage[cmyk,dvipsnames,x11names,svgnames]{xcolor}
+\pagestyle{empty}
+\usepackage[a4paper,margin=3cm]{geometry}
+\usepackage[characters=55]{responsive}
+\setmainfont{TeX Gyre Heros}
+\setsansfont{TeX Gyre Heros}
+\usepackage{array}
+
+\newcommand\cisloregalu[1]{\clearpage\par\null\hfill\hbox{\Huge\bfseries#1}\par\null\vfill}
+\newcommand\nadpis[1]{\par\bigskip\null\bgroup\large\textbf{#1}\egroup\par\medskip}
+\newcommand\radek[2]{\tabular{@{}p{0.2\textwidth}>{\raggedright\arraybackslash}p{0.8\textwidth}@{}} #1 &  #2\\\endtabular\par}
+
+\begin{document}
+% nechci zalamování slov
+\hyphenpenalty=10000
+\exhyphenpenalty=10000
+\parindent=0pt
+{{content}}
+\end{document}
+
+</template>
+	<h1>Oddíly v regálech</h1>
+  <textarea id="pole" rows="10" cols="50" placeholder="Zadejte data"></textarea>
+<details><summary>Nastavení</summary>
+  <!-- <legend>Startovací řádek: <input id="row" value="1" /></legend> -->
+  <!-- <legend>Startovací sloupec: <input id="column" value="1" /></legend> -->
+
+
+</details>
+<button id="nacti">Načíst data</button>
+<button id="generovat">Generovat PDF</button>
+<div id="tabulka"></div>
+
+  <article>
+    <p>Tento formulář vytvoří seznamy oddílů a 2. signatur, co v nich jsou obsazené. Zkopírujte do něj celý obsah záložek <em>Studovna 1 očíslovaná</em> nebo <em>Studovna 2 očíslovaná</em> z tabulky <a href="https://cunicz.sharepoint.com/:x:/r/sites/PEDF-knihovna/Sdilene%20dokumenty/Rekonstrukce/popisy_oddilu.xlsx?d=wfcd6a68667774137857e0ab3c690c6ab&csf=1&web=1&e=cepUyO">popisy_oddilu.xlsx</a>, je uložená v kanálu Rekonstrukce v Teamsech.</p>
+  </article>
+  <script>
+const pole = document.getElementById('pole');
+const generovat = document.getElementById("generovat")
+const tabulka = document.getElementById('tabulka');
+const regaly_tex = document.getElementById("regaly_tex");
+nacti.addEventListener('click', () => {
+  // const markdown = pole.value;
+  // latex = marked.parse(markdown );
+  const template = regaly_tex.content.textContent 
+
+  let content = generateCode(pole.value);
+  if (content === null || content.trim() === '') {
+    tabulka.textContent = 'Žádná data k zobrazení. Zkontrolujte, zda jste zkopírovali obsah záložky s očíslovanými oddíly z tabulky popisy_oddilu.xlsx.';
+  } else {
+    let latex = template.replace('{{content}}', content);
+    tabulka.textContent = latex;
+    generovat.style.visibility = "visible";
+  }
+  tabulka.style.display = "block";
+});
+
+generovat.addEventListener('click', () => {
+  let latexCode = tabulka.textContent;
+  const texlive = new TeXLiveForm();
+  texlive.submit([
+    {
+      name: 'document.tex',
+      content: latexCode
+    },
+  ], {
+    engine: 'lualatex',
+    return: 'pdf'
+  });
+
+});
+  
+  </script>
+</body>
+</html>
