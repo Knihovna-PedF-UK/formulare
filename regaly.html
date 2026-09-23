@@ -43,6 +43,8 @@ nacti.addEventListener('click', () => {
   // const markdown = pole.value;
   // latex = marked.parse(markdown );
   const template = regaly_tex.content.textContent 
+
+  let content = generateCode(pole.value);
   let latex = template.replace('{{content}}', content);
   tabulka.textContent = latex;
 
