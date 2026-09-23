@@ -32,7 +32,7 @@ ${regaly.tex}
 	<h1>Oddíly v regálech</h1>
   ${formular-regaly.html}
   <article>
-  <p>Tento formulář vytvoří seznamy oddílů a 2. signatur, co v nich jsou obsazené.</p>
+    <p>Tento formulář vytvoří seznamy oddílů a 2. signatur, co v nich jsou obsazené. Zkopírujte do něj celý obsah záložek <em>Studovna 1 očíslovaná</em> nebo <em>Studovna 2 očíslovaná</em> z tabulky <a href="https://cunicz.sharepoint.com/:x:/r/sites/PEDF-knihovna/Sdilene%20dokumenty/Rekonstrukce/popisy_oddilu.xlsx?d=wfcd6a68667774137857e0ab3c690c6ab&csf=1&web=1&e=cepUyO">popisy_oddilu.xlsx</a>, je uložená v kanálu Rekonstrukce v Teamsech.</p>
   </article>
   <script>
 const pole = document.getElementById('pole');
@@ -45,11 +45,14 @@ nacti.addEventListener('click', () => {
   const template = regaly_tex.content.textContent 
 
   let content = generateCode(pole.value);
-  let latex = template.replace('{{content}}', content);
-  tabulka.textContent = latex;
-
+  if (content === null || content.trim() === '') {
+    tabulka.textContent = 'Žádná data k zobrazení. Zkontrolujte, zda jste zkopírovali obsah záložky s očíslovanými oddíly z tabulky popisy_oddilu.xlsx.';
+  } else {
+    let latex = template.replace('{{content}}', content);
+    tabulka.textContent = latex;
+    generovat.style.visibility = "visible";
+  }
   tabulka.style.display = "block";
-  generovat.style.visibility = "visible";
 });
   </script>
 </body>
