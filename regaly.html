@@ -54,6 +54,22 @@ nacti.addEventListener('click', () => {
   }
   tabulka.style.display = "block";
 });
+
+generovat.addEventListener('click', () => {
+  let latexCode = tabulka.textContent;
+  const texlive = new TeXLiveForm();
+  texlive.submit([
+    {
+      name: 'document.tex',
+      content: latexCode
+    },
+  ], {
+    engine: 'lualatex',
+    return: 'pdf'
+  });
+
+});
+  
   </script>
 </body>
 </html>
