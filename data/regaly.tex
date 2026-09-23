@@ -3,17 +3,19 @@
 \RequirePackage[cmyk,dvipsnames,x11names,svgnames]{xcolor}
 \pagestyle{empty}
 \usepackage[a4paper,margin=3cm]{geometry}
-\usepackage[characters=50]{responsive}
+\usepackage[characters=55]{responsive}
 \setmainfont{TeX Gyre Heros}
 \setsansfont{TeX Gyre Heros}
-\RequirePackage{ncccropbox} 
-
+\usepackage{array}
 
 \newcommand\cisloregalu[1]{\clearpage\par\null\hfill\hbox{\Huge\bfseries#1}\par\null\vfill}
-\newcommand\nadpis[1]{\par\bigskip\null\bigskip\bgroup\large\textbf{#1}\egroup\par\medskip}
-\newcommand\radek[2]{\tabular{@{}p{0.2\textwidth}p{0.8\textwidth}@{}} #1 &  #2\\\endtabular\par}
+\newcommand\nadpis[1]{\par\bigskip\null\bgroup\large\textbf{#1}\egroup\par\medskip}
+\newcommand\radek[2]{\tabular{@{}p{0.2\textwidth}>{\raggedright\arraybackslash}p{0.8\textwidth}@{}} #1 &  #2\\\endtabular\par}
 
 \begin{document}
+% nechci zalamování slov
+\hyphenpenalty=10000
+\exhyphenpenalty=10000
 \parindent=0pt
 {{content}}
 \end{document}
